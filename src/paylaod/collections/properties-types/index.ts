@@ -8,6 +8,7 @@ export const PropertiesTypes: CollectionConfig = {
     plural: 'Property Types',
   },
   admin: {
+    hidden: true,
     useAsTitle: 'name',
   },
   fields: [
