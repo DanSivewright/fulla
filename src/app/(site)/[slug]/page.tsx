@@ -44,9 +44,6 @@ const { Page } = createPage({
 })
 
 export async function generateStaticParams() {
-  if (process.env.NODE_ENV === 'development') {
-    return null
-  }
   const payload = await getPayloadHMR({ config })
   const pages = await payload.find({
     collection: 'pages',
