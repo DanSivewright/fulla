@@ -14,6 +14,7 @@ export const HeroText: React.FC<Props> = ({}) => {
   const container = useRef(null)
 
   const { scrollYProgress } = useScroll({
+    // @ts-ignore
     target: container,
 
     offset: ['start 0.9', 'start 0.25'],
@@ -36,6 +37,7 @@ export const HeroText: React.FC<Props> = ({}) => {
       <motion.p
         ref={container}
         style={{ opacity: scrollYProgress }}
+        // @ts-ignore
         className={titleVariants({ className: 'w-3/4' })}
       ></motion.p>
     </div>
