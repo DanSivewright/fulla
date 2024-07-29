@@ -1,3 +1,4 @@
+import { Blocks } from '@/components/blocks'
 import { Hero } from '@/components/hero'
 import { createPage } from '@/lib/create-page'
 import { generateMeta } from '@/lib/generate-meta'
@@ -20,9 +21,6 @@ const { Page } = createPage({
     })
     return result?.docs?.[0] || null
   },
-  // metadata: async ({ data }) => {
-  //   return generateMeta({ doc: data })
-  // },
   component: ({ params: { slug }, data }) => {
     if (!data) {
       notFound()
@@ -32,25 +30,33 @@ const { Page } = createPage({
     return (
       <article>
         <Hero {...hero} />
+        <Blocks blocks={layout} />
+
+        <section className="container">
+          <h1>Layout</h1>
+          <pre>
+            <code>{JSON.stringify(layout, null, 2)}</code>
+          </pre>
+        </section>
       </article>
     )
   },
 })
 
-export async function generateStaticParams() {
-  const payload = await getPayloadHMR({ config })
-  const pages = await payload.find({
-    collection: 'pages',
-    draft: false,
-    limit: 1000,
-    overrideAccess: false,
-  })
+// export async function generateStaticParams() {
+//   const payload = await getPayloadHMR({ config })
+//   const pages = await payload.find({
+//     collection: 'pages',
+//     draft: false,
+//     limit: 1000,
+//     overrideAccess: false,
+//   })
 
-  return pages.docs
-    ?.filter((doc) => {
-      return doc.slug !== 'home'
-    })
-    .map(({ slug }) => slug)
-}
+//   return pages.docs
+//     ?.filter((doc) => {
+//       return doc.slug !== 'home'
+//     })
+//     .map(({ slug }) => slug)
+// }
 
 export default Page

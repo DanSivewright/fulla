@@ -6,12 +6,14 @@ import { FormBlock } from './form'
 import { MediaBlock } from './media-block'
 import { toKebabCase } from '@/lib/to-kebab-case'
 import { Page } from '@/payload-types'
+import { BentoBlock } from './bento-block'
 
 const blockComponents = {
   content: ContentBlock,
   cta: CallToActionBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
+  bentoBlock: BentoBlock,
 }
 
 export const Blocks: React.FC<{
@@ -33,16 +35,18 @@ export const Blocks: React.FC<{
             if (Block) {
               return (
                 <div className="my-16" key={index}>
+                  {blockType}
                   <Block id={toKebabCase(blockName)} {...block} />
                 </div>
               )
+            } else {
+              return blockType
             }
           }
-          return null
         })}
       </Fragment>
     )
+  } else {
+    return 'No Blocks'
   }
-
-  return null
 }
