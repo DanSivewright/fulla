@@ -341,6 +341,29 @@ export interface Page {
         blockName?: string | null;
         blockType: 'formBlock';
       }
+    | {
+        items?:
+          | {
+              blocks?:
+                | ({
+                    relationTo: 'pages';
+                    value: number | Page;
+                  } | null)
+                | ({
+                    relationTo: 'posts';
+                    value: number | Post;
+                  } | null)
+                | ({
+                    relationTo: 'spaces';
+                    value: number | Space;
+                  } | null);
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'bento-block';
+      }
   )[];
   meta?: {
     title?: string | null;
@@ -519,48 +542,6 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "properties".
- */
-export interface Property {
-  id: number;
-  name: string;
-  description?: {
-    root: {
-      type: string;
-      children: {
-        type: string;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  slug?: string | null;
-  address: string;
-  type: number | PropertiesType;
-  company: number | Company;
-  managers?: (number | User)[] | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "propertiesTypes".
- */
-export interface PropertiesType {
-  id: number;
-  name: string;
-  description?: string | null;
-  slug?: string | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "spaces".
  */
 export interface Space {
@@ -639,6 +620,48 @@ export interface Space {
     | null;
   floor?: string | null;
   capacity?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "properties".
+ */
+export interface Property {
+  id: number;
+  name: string;
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  slug?: string | null;
+  address: string;
+  type: number | PropertiesType;
+  company: number | Company;
+  managers?: (number | User)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "propertiesTypes".
+ */
+export interface PropertiesType {
+  id: number;
+  name: string;
+  description?: string | null;
+  slug?: string | null;
   updatedAt: string;
   createdAt: string;
 }

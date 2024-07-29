@@ -18,6 +18,7 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
+import { BentoBlock } from '@/paylaod/blocks/bento-block'
 export const Pages: CollectionConfig = {
   slug: 'pages',
   admin: {
@@ -52,7 +53,7 @@ export const Pages: CollectionConfig = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock],
+              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, BentoBlock],
               required: true,
             },
           ],
@@ -92,7 +93,7 @@ export const Pages: CollectionConfig = {
         position: 'sidebar',
       },
     },
-    slugField(),
+    slugField('title'),
   ],
   hooks: {
     afterChange: [revalidatePage],
