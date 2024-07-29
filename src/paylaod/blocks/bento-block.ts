@@ -11,8 +11,8 @@ export const BentoBlock: Block = {
     {
       type: 'array',
       name: 'items',
-      maxRows: 3,
-      minRows: 3,
+      maxRows: 2,
+      minRows: 2,
       fields: [
         {
           name: 'blocks',
