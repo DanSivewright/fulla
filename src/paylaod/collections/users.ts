@@ -14,6 +14,11 @@ export const Users: CollectionConfig = {
       relationTo: 'companies',
     },
     {
+      name: 'name',
+      label: 'Name',
+      type: 'text',
+    },
+    {
       name: 'role',
       type: 'select',
       options: [

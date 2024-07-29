@@ -13,12 +13,12 @@ export const Spaces: CollectionConfig = {
       type: 'text',
       required: true,
     },
-    {
-      name: 'accessControl',
-      label: 'Access Control',
-      type: 'select',
-      options: [],
-    },
+    // {
+    //   name: 'accessControl',
+    //   label: 'Access Control',
+    //   type: 'select',
+    //   options: [],
+    // },
     {
       name: 'description',
       label: 'Description',
