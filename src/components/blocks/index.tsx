@@ -13,7 +13,7 @@ const blockComponents = {
   cta: CallToActionBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
-  bentoBlock: BentoBlock,
+  'bento-block': BentoBlock,
 }
 
 export const Blocks: React.FC<{
@@ -22,6 +22,11 @@ export const Blocks: React.FC<{
   const { blocks } = props
 
   const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
+
+  console.log('blocks stuff::: ', {
+    blocks,
+    hasBlocks,
+  })
 
   if (hasBlocks) {
     return (
@@ -35,18 +40,17 @@ export const Blocks: React.FC<{
             if (Block) {
               return (
                 <div className="my-16" key={index}>
-                  {blockType}
                   <Block id={toKebabCase(blockName)} {...block} />
                 </div>
               )
             } else {
-              return blockType
+              return null
             }
           }
         })}
       </Fragment>
     )
   } else {
-    return 'No Blocks'
+    return null
   }
 }
