@@ -6,7 +6,7 @@ import config from '@payload-config'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import { notFound } from 'next/navigation'
 
-const { Page, generateMetaData } = createPage({
+const { Page } = createPage({
   loader: async ({ params: { slug } }) => {
     const payload = await getPayloadHMR({ config })
     const result = await payload.find({
@@ -20,9 +20,9 @@ const { Page, generateMetaData } = createPage({
     })
     return result?.docs?.[0] || null
   },
-  metadata: async ({ data }) => {
-    return generateMeta({ doc: data })
-  },
+  // metadata: async ({ data }) => {
+  //   return generateMeta({ doc: data })
+  // },
   component: ({ params: { slug }, data }) => {
     if (!data) {
       notFound()
@@ -52,7 +52,5 @@ export async function generateStaticParams() {
     })
     .map(({ slug }) => slug)
 }
-
-export { generateMetaData }
 
 export default Page
