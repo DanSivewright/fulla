@@ -31,6 +31,7 @@ const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Fulla` : 'Fulla'
 }
 
+// @ts-ignore
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
   return doc?.slug
     ? `${process.env.NEXT_PUBLIC_SERVER_URL}/${doc.slug}`

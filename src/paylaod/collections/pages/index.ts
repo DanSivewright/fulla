@@ -21,6 +21,9 @@ import {
 import { BentoBlock } from '@/paylaod/blocks/bento-block'
 export const Pages: CollectionConfig = {
   slug: 'pages',
+  access: {
+    read: () => true,
+  },
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
     // livePreview: {
