@@ -11,7 +11,6 @@ const SlugLayout: React.FC<Props> = async ({ children }) => {
   return (
     <>
       <MarketingHeader header={header} />
-      <pre>{JSON.stringify(header, null, 2)}</pre>
       {children}
     </>
   )

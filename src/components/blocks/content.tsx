@@ -40,7 +40,6 @@ export const ContentBlock: React.FC<
                 })}
                 key={index}
               >
-                {colsSpanClasses[size]}
                 <RichText content={richText} enableGutter={false} />
                 {/* @ts-ignore */}
                 {enableLink && <CMSLink {...link} />}

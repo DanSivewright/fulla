@@ -66,7 +66,7 @@ const MarketingHeader: React.FC<Props> = ({ header }) => {
     return chars
   }
 
-  const MotionLink = motion(Link, { forwardMotionProps: true })
+  console.log('selectedLink::: ', selectedLink)
 
   return (
     <div className="sticky inset-x-0 top-0 z-10 bg-[#f4f0ea] p-3">
@@ -117,9 +117,9 @@ const MarketingHeader: React.FC<Props> = ({ header }) => {
                           }/${reference.value.slug}`
                         : url
                     return (
-                      <MotionLink
-                        href={href}
+                      <motion.p
                         key={`l_${index}`}
+                        // @ts-ignore
                         className="text-5xl font-light uppercase lg:text-6xl xl:text-[5.5rem]"
                         style={{ margin: 0 }}
                         onMouseOver={() => {
@@ -133,8 +133,19 @@ const MarketingHeader: React.FC<Props> = ({ header }) => {
                           selectedLink.isActive && selectedLink.index != index ? 'open' : 'closed'
                         }
                       >
-                        {getChars(label)}
-                      </MotionLink>
+                        <Link
+                          onClick={() => {
+                            setSelectedLink({
+                              isActive: true,
+                              index,
+                            })
+                            setIsActive(false)
+                          }}
+                          href={href}
+                        >
+                          {getChars(label)}
+                        </Link>
+                      </motion.p>
                     )
                   })}
                 </div>
@@ -155,7 +166,7 @@ const MarketingHeader: React.FC<Props> = ({ header }) => {
                 initial="initial"
                 animate={selectedLink.isActive ? 'open' : 'closed'}
                 // @ts-ignore
-                className="relative mb-3 aspect-square w-[500px] grow overflow-hidden"
+                className="relative bg-red-200 mb-3 aspect-square w-[500px] grow overflow-hidden"
               >
                 <Image
                   src={`/images/${links[selectedLink.index].src}`}
