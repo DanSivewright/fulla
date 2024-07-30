@@ -562,6 +562,8 @@ export interface Form {
 export interface Space {
   id: number;
   name: string;
+  featureImage?: (number | null) | Media;
+  categories?: (number | Category)[] | null;
   description?: {
     root: {
       type: string;

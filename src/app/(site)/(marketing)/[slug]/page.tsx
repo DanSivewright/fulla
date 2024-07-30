@@ -13,6 +13,7 @@ const { Page } = createPage({
     const result = await payload.find({
       collection: 'pages',
       limit: 1,
+      depth: 5,
       where: {
         slug: {
           equals: slug,

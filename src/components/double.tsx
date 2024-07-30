@@ -69,13 +69,6 @@ export const Double: React.FC<Props> = ({
     }
   }
 
-  // const { ref: leftCardTitle, replay: replayLeft } = useScrambler({
-  //   text: titleOne,
-  // })
-  // const { ref: rightCardTitle, replay: replayRight } = useScrambler({
-  //   text: titleTwo,
-  // })
-
   return (
     <motion.div
       className={cn('flex h-[45vw] w-full items-end gap-2')}

@@ -13,6 +13,21 @@ export const Spaces: CollectionConfig = {
       type: 'text',
       required: true,
     },
+    {
+      name: 'featureImage',
+      label: 'Feature Image',
+      type: 'relationship',
+      relationTo: 'media',
+    },
+    {
+      name: 'categories',
+      type: 'relationship',
+      admin: {
+        position: 'sidebar',
+      },
+      hasMany: true,
+      relationTo: 'categories',
+    },
     // {
     //   name: 'accessControl',
     //   label: 'Access Control',
