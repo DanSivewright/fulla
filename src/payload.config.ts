@@ -23,6 +23,8 @@ import { Posts } from './paylaod/collections/posts'
 import { Pages } from './paylaod/collections/pages'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { Page, Post } from './payload-types'
+import { Header } from './paylaod/globals/header/header'
+import { Footer } from './paylaod/globals/footer/footer'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -44,24 +46,17 @@ export default buildConfig({
   },
   collections: [
     Users,
-
     Media,
-
     Categories,
-
     Posts,
-
     Pages,
-
     Companies,
-
     Properties,
     PropertiesTypes,
-
     Spaces,
-
     Bookings,
   ],
+  globals: [Header, Footer],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

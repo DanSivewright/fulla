@@ -1,17 +1,20 @@
-// @ts-nocheck
 'use client'
 
 import { AnimatePresence, motion } from 'framer-motion'
 import Image from 'next/image'
-import { useState } from 'react'
+import { JSX, useState } from 'react'
 
 import { sectionVariants } from '@/components/section'
 
 import { background, blur, height, opacity, translate } from './anim'
+import { Header } from '@/payload-types'
+import Link from 'next/link'
 
-type Props = {}
+type Props = {
+  header: Header
+}
 
-const MarketingHeader: React.FC<Props> = ({}) => {
+const MarketingHeader: React.FC<Props> = ({ header }) => {
   const links = [
     {
       title: 'Home',
@@ -63,7 +66,7 @@ const MarketingHeader: React.FC<Props> = ({}) => {
     return chars
   }
 
-  console.log('selectedLink::: ', selectedLink)
+  const MotionLink = motion(Link, { forwardMotionProps: true })
 
   return (
     <div className="sticky inset-x-0 top-0 z-10 bg-[#f4f0ea] p-3">
@@ -78,6 +81,7 @@ const MarketingHeader: React.FC<Props> = ({}) => {
         </div>
       </div>
       <motion.div
+        // @ts-ignore
         onClick={() => setIsActive(false)}
         variants={background}
         initial="initial"
@@ -91,6 +95,7 @@ const MarketingHeader: React.FC<Props> = ({}) => {
             initial="initial"
             animate="enter"
             exit="exit"
+            // @ts-ignore
             className="gutter flex flex-col overflow-hidden"
           >
             <div
@@ -102,10 +107,18 @@ const MarketingHeader: React.FC<Props> = ({}) => {
               <div className="flex grow flex-col gap-2 md:gap-4 lg:gap-6 xl:gap-8">
                 {/* OPTIONS */}
                 <div className="flex flex-wrap gap-2 md:gap-4 lg:gap-6 xl:gap-8">
-                  {links.map((link, index) => {
-                    const { title, href } = link
+                  {header?.navItems?.map(({ link: { label, url, reference, type }, id }, index) => {
+                    const href =
+                      type === 'reference' &&
+                      typeof reference?.value === 'object' &&
+                      reference.value.slug
+                        ? `${
+                            reference?.relationTo !== 'pages' ? `/${reference?.relationTo}` : ''
+                          }/${reference.value.slug}`
+                        : url
                     return (
-                      <motion.p
+                      <MotionLink
+                        href={href}
                         key={`l_${index}`}
                         className="text-5xl font-light uppercase lg:text-6xl xl:text-[5.5rem]"
                         style={{ margin: 0 }}
@@ -120,8 +133,8 @@ const MarketingHeader: React.FC<Props> = ({}) => {
                           selectedLink.isActive && selectedLink.index != index ? 'open' : 'closed'
                         }
                       >
-                        {getChars(title)}
-                      </motion.p>
+                        {getChars(label)}
+                      </MotionLink>
                     )
                   })}
                 </div>
@@ -141,7 +154,8 @@ const MarketingHeader: React.FC<Props> = ({}) => {
                 variants={opacity}
                 initial="initial"
                 animate={selectedLink.isActive ? 'open' : 'closed'}
-                className="relative bg-red-200 mb-3 aspect-square w-[500px] grow overflow-hidden"
+                // @ts-ignore
+                className="relative mb-3 aspect-square w-[500px] grow overflow-hidden"
               >
                 <Image
                   src={`/images/${links[selectedLink.index].src}`}

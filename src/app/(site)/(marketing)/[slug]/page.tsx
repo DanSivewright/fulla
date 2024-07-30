@@ -31,25 +31,20 @@ const { Page } = createPage({
       <article>
         <Hero {...hero} />
         <Blocks blocks={layout} />
-
-        {/* <section className="container">
-          <h1>Layout</h1>
-          <pre>
-            <code>{JSON.stringify(layout, null, 2)}</code>
-          </pre>
-        </section> */}
       </article>
     )
   },
 })
 
 export async function generateStaticParams() {
+  if (process.env.NODE_ENV === 'development') {
+    return []
+  }
   const payload = await getPayloadHMR({ config })
   const pages = await payload.find({
     collection: 'pages',
     draft: false,
     limit: 1000,
-    overrideAccess: false,
   })
 
   return pages.docs

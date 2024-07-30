@@ -18,6 +18,7 @@ export const CallToActionBlock: React.FC<
         </div>
         <div className="flex flex-col gap-8">
           {(links || []).map(({ link }, i) => {
+            // @ts-ignore
             return <CMSLink key={i} size="lg" {...link} />
           })}
         </div>

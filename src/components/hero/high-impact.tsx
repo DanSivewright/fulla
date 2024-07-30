@@ -24,6 +24,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
               {links.map(({ link }, i) => {
                 return (
                   <li key={i}>
+                    {/* @ts-ignore */}
                     <CMSLink {...link} />
                   </li>
                 )
