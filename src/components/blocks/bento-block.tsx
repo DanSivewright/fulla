@@ -9,7 +9,7 @@ import Link from 'next/link'
 import { titleVariants } from '@/components/title'
 import { cn } from '@/lib/utils'
 import { Badge } from '../ui/badge'
-import { prePrependServerUrl } from '@/lib/prepend-server-url'
+import { prependServerUrl } from '@/lib/prepend-server-url'
 
 type Props = Extract<Page['layout'][0], { blockType: 'bento-block' }>
 
@@ -107,7 +107,7 @@ export const BentoBlock: React.FC<Props> = ({ items }) => {
                 {src && (
                   <Image
                     className="object-cover brightness-75"
-                    src={prePrependServerUrl(src)}
+                    src={prependServerUrl(src)}
                     alt={'image'}
                     fill
                   />
