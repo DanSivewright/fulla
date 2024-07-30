@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 const { Page } = createPage({
   component: () => (
-    <div>
+    <div className="flex flex-col gap-4">
       This is the site page
       <Button asChild>
         <Link href="/marketing">Go to marketing</Link>
