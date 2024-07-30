@@ -2,15 +2,14 @@
 import { Media, Page, Post, Space } from '@/payload-types'
 import { useRef } from 'react'
 
-import Image, { StaticImageData } from 'next/image'
-import Link from 'next/link'
 import { motion } from 'framer-motion'
+import Image from 'next/image'
+import Link from 'next/link'
 
-import { cn } from '@/lib/utils'
 import { titleVariants } from '@/components/title'
-import { Badge, badgeVariants } from '../ui/badge'
-
-// import { badgeVariants } from './ui/badge'
+import { cn } from '@/lib/utils'
+import { Badge } from '../ui/badge'
+import { prePrependServerUrl } from '@/lib/prepend-server-url'
 
 type Props = Extract<Page['layout'][0], { blockType: 'bento-block' }>
 
@@ -106,7 +105,12 @@ export const BentoBlock: React.FC<Props> = ({ items }) => {
             <div className="w-full h-full flex-col justify-between">
               <div className="relative overflow-hidden bg-gradient-to-tr from-blue-300 to-cyan-400 via-indigo-300 pt-[66.66%]">
                 {src && (
-                  <Image className="object-cover brightness-75" src={src} alt={'image'} fill />
+                  <Image
+                    className="object-cover brightness-75"
+                    src={prePrependServerUrl(src)}
+                    alt={'image'}
+                    fill
+                  />
                 )}
               </div>
               <div className="absolute inset-0 z-10 flex h-full w-full flex-col justify-between p-3">

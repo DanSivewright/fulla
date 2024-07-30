@@ -8,6 +8,7 @@ import React from 'react'
 import type { Props as MediaProps } from '../types'
 
 import { cn } from '@/lib/utils'
+import { prePrependServerUrl } from '@/lib/prepend-server-url'
 
 export const ImageMedia: React.FC<MediaProps> = (props) => {
   const {
@@ -45,7 +46,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     alt = altFromResource
 
     // src = `${process.env.NEXT_PUBLIC_SERVER_URL}${url}`
-    src = url
+    src = prePrependServerUrl(url)
   }
 
   // NOTE: this is used by the browser to determine which image to download at different screen sizes
