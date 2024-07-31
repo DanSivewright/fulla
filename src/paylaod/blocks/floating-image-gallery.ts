@@ -31,14 +31,5 @@ export const FloatingImageGallery: Block = {
         maxRows: 2,
       },
     }),
-    {
-      name: 'images',
-      type: 'relationship',
-      relationTo: 'media',
-      hasMany: true,
-      minRows: 9,
-      maxRows: 9,
-      unique: true,
-    },
   ],
 }

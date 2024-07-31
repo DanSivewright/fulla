@@ -291,7 +291,6 @@ export interface Page {
               id?: string | null;
             }[]
           | null;
-        images?: (number | Media)[] | null;
         id?: string | null;
         blockName?: string | null;
         blockType: 'float-image-gallery';
