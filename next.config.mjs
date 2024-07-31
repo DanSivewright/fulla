@@ -10,6 +10,11 @@ const nextConfig = {
         hostname: 'zdwzlmzfrkcov1ms.public.blob.vercel-storage.com',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'fulla.vercel.app',
+        port: '',
+      },
     ],
   },
 }
