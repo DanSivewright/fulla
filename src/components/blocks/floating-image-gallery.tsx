@@ -127,7 +127,12 @@ export const FloatingImageGallery: React.FC<Props> = ({ richText, links }) => {
         />
       </div>
       <div className="absolute flex flex-col items-center justify-center left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        <RichText className="!text-white text-center" content={richText} enableGutter={false} />
+        <RichText
+          className="!text-white text-center"
+          content={richText}
+          enableProse={false}
+          enableGutter={false}
+        />
 
         <div className="flex mt-4 flex-col gap-8">
           {(links || []).map(({ link }, i) => {
