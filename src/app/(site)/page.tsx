@@ -14,7 +14,7 @@ const { Page } = createPage({
       <div className="w-1/2 aspect-square bg-red-200 relative overflow-hiddden">
         <Suspense>
           <Image
-            src={'/api/media/file/fulla logo.png'}
+            src={'https://fulla.vercel.app/api/media/file/fulla logo.png'}
             fill
             priority
             className="object-contain"
