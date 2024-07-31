@@ -60,6 +60,9 @@ dependencies:
   graphql:
     specifier: ^16.8.1
     version: 16.9.0
+  gsap:
+    specifier: ^3.12.5
+    version: 3.12.5
   lucide-react:
     specifier: ^0.416.0
     version: 0.416.0(react@19.0.0-rc-fb9a90fa48-20240614)
@@ -6087,6 +6090,10 @@ packages:
   /graphql@16.9.0:
     resolution: {integrity: sha512-GGTKBX4SD7Wdb8mqeDLni2oaRGYQWjWHGKPQ24ZMnUtKfcsVoiv4uX8+LJr1K6U5VW2Lu1BwJnj7uiori0YtRw==}
     engines: {node: ^12.22.0 || ^14.16.0 || ^16.0.0 || >=17.0.0}
+    dev: false
+
+  /gsap@3.12.5:
+    resolution: {integrity: sha512-srBfnk4n+Oe/ZnMIOXt3gT605BX9x5+rh/prT2F1SsNJsU1XuMiP0E2aptW481OnonOGACZWBqseH5Z7csHxhQ==}
     dev: false
 
   /hanji@0.0.5:

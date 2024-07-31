@@ -11,15 +11,6 @@ const { Page } = createPage({
       <Button asChild>
         <Link href="/marketing">Go to marketing</Link>
       </Button>
-      <div className="w-1/2 aspect-square bg-red-200 relative overflow-hiddden">
-        <Image
-          src={'https://fulla.vercel.app/api/media/file/fulla logo.png'}
-          fill
-          priority
-          className="object-contain"
-          alt="fulla logo"
-        />
-      </div>
     </div>
   ),
 })

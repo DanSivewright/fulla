@@ -19,6 +19,7 @@ import {
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 import { BentoBlock } from '@/paylaod/blocks/bento-block'
+import { FloatingImageGallery } from '@/paylaod/blocks/floating-image-gallery'
 export const Pages: CollectionConfig = {
   slug: 'pages',
   access: {
@@ -56,7 +57,15 @@ export const Pages: CollectionConfig = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock, BentoBlock],
+              blocks: [
+                CallToAction,
+                FloatingImageGallery,
+                Content,
+                MediaBlock,
+                Archive,
+                FormBlock,
+                BentoBlock,
+              ],
               required: true,
             },
           ],
@@ -105,7 +114,7 @@ export const Pages: CollectionConfig = {
   versions: {
     drafts: {
       autosave: {
-        interval: 100, // We set this interval for optimal live preview
+        interval: process.env.NODE_ENV === 'development' ? 1000 * 60 * 5 : 1000 * 60 * 0.5, // We set this interval for optimal live preview
       },
     },
     maxPerDoc: 5,

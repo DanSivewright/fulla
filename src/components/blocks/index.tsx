@@ -7,6 +7,8 @@ import { MediaBlock } from './media-block'
 import { toKebabCase } from '@/lib/to-kebab-case'
 import { Page } from '@/payload-types'
 import { BentoBlock } from './bento-block'
+import { FloatingImageGallery } from './floating-image-gallery'
+import { cn } from '@/lib/utils'
 
 const blockComponents = {
   content: ContentBlock,
@@ -14,6 +16,7 @@ const blockComponents = {
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
   'bento-block': BentoBlock,
+  'float-image-gallery': FloatingImageGallery,
 }
 
 export const Blocks: React.FC<{
@@ -39,7 +42,12 @@ export const Blocks: React.FC<{
 
             if (Block) {
               return (
-                <div className="my-16" key={index}>
+                <div
+                  className={cn('mt-16', {
+                    'my-2': blockType === 'float-image-gallery',
+                  })}
+                  key={index}
+                >
                   <Block id={toKebabCase(blockName)} {...block} />
                 </div>
               )

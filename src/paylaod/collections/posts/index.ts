@@ -196,7 +196,7 @@ export const Posts: CollectionConfig = {
   versions: {
     drafts: {
       autosave: {
-        interval: 100, // We set this interval for optimal live preview
+        interval: process.env.NODE_ENV === 'development' ? 1000 * 60 * 5 : 1000 * 60 * 0.5, // We set this interval for optimal live preview
       },
     },
     maxPerDoc: 5,
