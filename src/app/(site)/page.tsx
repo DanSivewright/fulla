@@ -1,14 +1,3 @@
-import { Section, sectionVariants } from '@/components/section'
-import { Title } from '@/components/title'
-import { Button } from '@/components/ui/button'
-import { createPage } from '@/lib/create-page'
-import { cn } from '@/lib/utils'
-import Image from 'next/image'
-import Link from 'next/link'
-import { Suspense } from 'react'
-import imageOne from '../../../public/images/title1.png'
-import imageTwo from '../../../public/images/title2.png'
-import imageThree from '../../../public/images/title3.png'
 import { Card, CardContent } from '@/components/ui/card'
 import {
   Carousel,
@@ -17,6 +6,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel'
+import { createPage } from '@/lib/create-page'
 
 const { Page } = createPage({
   component: () => (

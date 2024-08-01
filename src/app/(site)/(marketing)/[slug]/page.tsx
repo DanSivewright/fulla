@@ -1,11 +1,12 @@
 import { Blocks } from '@/components/blocks'
 import { Hero } from '@/components/hero'
 import { createPage } from '@/lib/create-page'
-import { generateMeta } from '@/lib/generate-meta'
 
 import config from '@payload-config'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import { notFound } from 'next/navigation'
+
+export const dynamic = 'force-static'
 
 const { Page } = createPage({
   loader: async ({ params: { slug } }) => {
