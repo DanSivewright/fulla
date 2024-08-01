@@ -20,6 +20,7 @@ import {
 } from '@payloadcms/plugin-seo/fields'
 import { BentoBlock } from '@/paylaod/blocks/bento-block'
 import { FloatingImageGallery } from '@/paylaod/blocks/floating-image-gallery'
+import { TextHero } from '@/paylaod/blocks/text-hero'
 export const Pages: CollectionConfig = {
   slug: 'pages',
   access: {
@@ -65,6 +66,7 @@ export const Pages: CollectionConfig = {
                 Archive,
                 FormBlock,
                 BentoBlock,
+                TextHero,
               ],
               required: true,
             },

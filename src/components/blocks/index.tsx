@@ -9,6 +9,7 @@ import { Page } from '@/payload-types'
 import { BentoBlock } from './bento-block'
 import { FloatingImageGallery } from './floating-image-gallery'
 import { cn } from '@/lib/utils'
+import { TextHero } from './text-hero'
 
 const blockComponents = {
   content: ContentBlock,
@@ -17,6 +18,7 @@ const blockComponents = {
   mediaBlock: MediaBlock,
   'bento-block': BentoBlock,
   'float-image-gallery': FloatingImageGallery,
+  'text-hero': TextHero,
 }
 
 export const Blocks: React.FC<{
@@ -25,11 +27,6 @@ export const Blocks: React.FC<{
   const { blocks } = props
 
   const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
-
-  console.log('blocks stuff::: ', {
-    blocks,
-    hasBlocks,
-  })
 
   if (hasBlocks) {
     return (
@@ -42,12 +39,7 @@ export const Blocks: React.FC<{
 
             if (Block) {
               return (
-                <div
-                  className={cn('mt-16', {
-                    'my-2': blockType === 'float-image-gallery',
-                  })}
-                  key={index}
-                >
+                <div className="my-16" key={index}>
                   <Block id={toKebabCase(blockName)} {...block} />
                 </div>
               )

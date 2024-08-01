@@ -415,6 +415,12 @@ export interface Page {
         blockName?: string | null;
         blockType: 'bento-block';
       }
+    | {
+        visible?: boolean | null;
+        id?: string | null;
+        blockName?: string | null;
+        blockType: 'text-hero';
+      }
   )[];
   meta?: {
     title?: string | null;
