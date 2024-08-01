@@ -260,7 +260,7 @@ export interface Page {
         blockType: 'cta';
       }
     | {
-        richText?: {
+        introContent?: {
           root: {
             type: string;
             children: {
@@ -275,25 +275,32 @@ export interface Page {
           };
           [k: string]: unknown;
         } | null;
-        links?:
+        slides?:
           | {
-              link: {
-                type?: ('reference' | 'custom') | null;
-                newTab?: boolean | null;
-                reference?: {
-                  relationTo: 'pages';
-                  value: number | Page;
-                } | null;
-                url?: string | null;
-                label: string;
-                appearance?: ('default' | 'outline') | null;
-              };
+              richText?: {
+                root: {
+                  type: string;
+                  children: {
+                    type: string;
+                    version: number;
+                    [k: string]: unknown;
+                  }[];
+                  direction: ('ltr' | 'rtl') | null;
+                  format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                  indent: number;
+                  version: number;
+                };
+                [k: string]: unknown;
+              } | null;
+              image: number | Media;
               id?: string | null;
             }[]
           | null;
+        loop?: boolean | null;
+        dots?: boolean | null;
         id?: string | null;
         blockName?: string | null;
-        blockType: 'float-image-gallery';
+        blockType: 'carousel';
       }
     | {
         columns?:

@@ -1,15 +1,15 @@
 import React, { Fragment } from 'react'
 
+import { toKebabCase } from '@/lib/to-kebab-case'
+import { Page } from '@/payload-types'
+import { BentoBlock } from './bento-block'
 import { CallToActionBlock } from './call-to-action'
 import { ContentBlock } from './content'
 import { FormBlock } from './form'
 import { MediaBlock } from './media-block'
-import { toKebabCase } from '@/lib/to-kebab-case'
-import { Page } from '@/payload-types'
-import { BentoBlock } from './bento-block'
-import { FloatingImageGallery } from './floating-image-gallery'
-import { cn } from '@/lib/utils'
 import { TextHero } from './text-hero'
+import { CarouselBlock } from './carousel'
+import { Section } from '../section'
 
 const blockComponents = {
   content: ContentBlock,
@@ -17,8 +17,8 @@ const blockComponents = {
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
   'bento-block': BentoBlock,
-  'float-image-gallery': FloatingImageGallery,
   'text-hero': TextHero,
+  carousel: CarouselBlock,
 }
 
 export const Blocks: React.FC<{
@@ -39,9 +39,9 @@ export const Blocks: React.FC<{
 
             if (Block) {
               return (
-                <div className="my-16" key={index}>
+                <Section key={index}>
                   <Block id={toKebabCase(blockName)} {...block} />
-                </div>
+                </Section>
               )
             } else {
               return null
