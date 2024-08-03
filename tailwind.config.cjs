@@ -79,5 +79,33 @@ module.exports = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],
+  plugins: [
+    require('tailwindcss-animate'),
+    require('@tailwindcss/typography'),
+    ({ addComponents, theme }) => {
+      const lg = theme('screens.lg', {})
+      const xl = theme('screens.xl', {})
+      addComponents({
+        '.no-scrollbar': {
+          scrollbarWidth: 'none',
+          '-ms-overflow-style': 'none',
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
+        },
+        '.gutter': {
+          paddingLeft: theme('spacing.6'),
+          paddingRight: theme('spacing.6'),
+          [`@media (min-width: ${lg})`]: {
+            paddingLeft: theme('spacing.12'),
+            paddingRight: theme('spacing.12'),
+          },
+          [`@media (min-width: ${xl})`]: {
+            paddingLeft: theme('spacing.24'),
+            paddingRight: theme('spacing.24'),
+          },
+        },
+      })
+    },
+  ],
 }
