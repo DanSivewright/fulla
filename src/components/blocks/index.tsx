@@ -39,9 +39,9 @@ export const Blocks: React.FC<{
 
             if (Block) {
               return (
-                <Section key={index}>
+                <div className="my-16 lg:my-32" key={index}>
                   <Block id={toKebabCase(blockName)} {...block} />
-                </Section>
+                </div>
               )
             } else {
               return null

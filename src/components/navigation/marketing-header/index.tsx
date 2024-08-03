@@ -69,7 +69,7 @@ const MarketingHeader: React.FC<Props> = ({ header }) => {
   console.log('selectedLink::: ', selectedLink)
 
   return (
-    <div className="sticky inset-x-0 top-0 z-10 bg-[#f4f0ea] p-3">
+    <div className="sticky inset-x-0 top-0 z-50 bg-[#f4f0ea] p-3">
       <div className="relative flex justify-center text-xs font-bold uppercase">
         <div
           onClick={() => {
