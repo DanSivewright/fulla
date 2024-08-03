@@ -1,14 +1,30 @@
-import { Header } from '@/components/navigation/header'
+import { ThemeProvider } from '@/components/providers/theme-provider'
 
-type Props = {
-  children: React.ReactNode
-}
-const Layout: React.FC<Props> = ({ children }) => {
+import { GeistMono } from 'geist/font/mono'
+import { GeistSans } from 'geist/font/sans'
+
+import '../../styles/globals.css'
+import { Header } from '@/components/navigation/header'
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen flex-col">
-      <Header />
-      {children}
-    </div>
+    <html
+      className={`${GeistSans.variable} ${GeistMono.variable}`}
+      suppressHydrationWarning
+      lang="en"
+    >
+      <body>
+        <main className="relative flex min-h-screen flex-col">
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Header />
+            {children}
+          </ThemeProvider>
+        </main>
+      </body>
+    </html>
   )
 }
-export default Layout

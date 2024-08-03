@@ -2,17 +2,33 @@ import MarketingHeader from '@/components/navigation/marketing-header'
 import { getCachedGlobal } from '@/lib/get-cached-global'
 import { Header } from '@/payload-types'
 
-type Props = {
-  children: React.ReactNode
-}
+import { ThemeProvider } from '@/components/providers/theme-provider'
 
-const SlugLayout: React.FC<Props> = async ({ children }) => {
+import { GeistMono } from 'geist/font/mono'
+import { GeistSans } from 'geist/font/sans'
+
+import '../../styles/globals.css'
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const header: Header = await getCachedGlobal('header', 1)()
   return (
-    <>
-      <MarketingHeader header={header} />
-      {children}
-    </>
+    <html
+      className={`${GeistSans.variable} ${GeistMono.variable}`}
+      suppressHydrationWarning
+      lang="en"
+    >
+      <body>
+        <main className="relative flex min-h-screen flex-col">
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <MarketingHeader header={header} />
+            {children}
+          </ThemeProvider>
+        </main>
+      </body>
+    </html>
   )
 }
-export default SlugLayout
