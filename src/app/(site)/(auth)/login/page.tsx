@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useCallback, useRef } from "react"
+import React, { useRef } from "react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -11,7 +11,6 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -68,27 +67,6 @@ const LoginForm: React.FC = () => {
       )
     }
   }
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   formState: { errors, isLoading },
-  // } = useForm<FormData>()
-
-  // const onSubmit = useCallback(
-  //   async (data: FormData) => {
-  //     try {
-  //       await login(data)
-  //       if (redirect?.current) router.push(redirect.current as string)
-  //       else router.push("/account")
-  //     } catch (_) {
-  //       setError(
-  //         "There was an error with the credentials provided. Please try again."
-  //       )
-  //     }
-  //   },
-  //   [login, router]
-  // )
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
