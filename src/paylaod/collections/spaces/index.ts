@@ -1,5 +1,7 @@
 import { slugField } from '@/paylaod/fields/slug-field'
-import { CollectionConfig } from 'payload'
+import { Space } from '@/payload-types'
+import { CollectionAfterChangeHook, CollectionConfig } from 'payload'
+import { revalidateSpaces } from './hooks/revalidate-spaces'
 
 export const Spaces: CollectionConfig = {
   slug: 'spaces',
@@ -28,12 +30,6 @@ export const Spaces: CollectionConfig = {
       hasMany: true,
       relationTo: 'categories',
     },
-    // {
-    //   name: 'accessControl',
-    //   label: 'Access Control',
-    //   type: 'select',
-    //   options: [],
-    // },
     {
       name: 'description',
       label: 'Description',
@@ -128,4 +124,7 @@ export const Spaces: CollectionConfig = {
       type: 'text',
     },
   ],
+  hooks: {
+    afterChange: [revalidateSpaces],
+  },
 }
