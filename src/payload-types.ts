@@ -21,6 +21,7 @@ export interface Config {
     propertiesTypes: PropertiesType;
     spaces: Space;
     bookings: Booking;
+    collections: Collection;
     forms: Form;
     'form-submissions': FormSubmission;
     'payload-preferences': PayloadPreference;
@@ -743,6 +744,19 @@ export interface Booking {
   endTime: string;
   space: number | Space;
   tenants: (number | User)[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "collections".
+ */
+export interface Collection {
+  id: number;
+  name: string;
+  description?: string | null;
+  spaces?: (number | Space)[] | null;
+  user: number | User;
   updatedAt: string;
   createdAt: string;
 }

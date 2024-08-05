@@ -6,7 +6,6 @@ import type { Space } from '../../../../payload-types'
 
 export const revalidateSpaces: CollectionAfterChangeHook<Space> = ({
   doc,
-  previousDoc,
   req: { payload },
 }) => {
   const path = `spaces/${doc.id}`

@@ -8,7 +8,12 @@ import { GeistMono } from 'geist/font/mono'
 import { GeistSans } from 'geist/font/sans'
 
 import '../../styles/globals.css'
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
+import { AuthProvider } from '@/components/providers/auth'
+export default async function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const header: Header = await getCachedGlobal('header', 1)()
   return (
     <html
@@ -24,8 +29,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             enableSystem
             disableTransitionOnChange
           >
-            <MarketingHeader header={header} />
-            {children}
+            <AuthProvider>
+              <MarketingHeader header={header} />
+              {children}
+            </AuthProvider>
           </ThemeProvider>
         </main>
       </body>

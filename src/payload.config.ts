@@ -5,7 +5,11 @@ import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 
-import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
+import {
+  FixedToolbarFeature,
+  HeadingFeature,
+  lexicalEditor,
+} from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
@@ -25,6 +29,7 @@ import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { Page, Post } from './payload-types'
 import { Header } from './paylaod/globals/header/header'
 import { Footer } from './paylaod/globals/footer/footer'
+import { Collections } from './paylaod/collections/collections'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -55,6 +60,7 @@ export default buildConfig({
     PropertiesTypes,
     Spaces,
     Bookings,
+    Collections,
   ],
   globals: [Header, Footer],
   editor: lexicalEditor(),
@@ -93,7 +99,9 @@ export default buildConfig({
                     return [
                       ...rootFeatures,
                       FixedToolbarFeature(),
-                      HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+                      HeadingFeature({
+                        enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'],
+                      }),
                     ]
                   },
                 }),

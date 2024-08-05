@@ -5,7 +5,12 @@ import { GeistSans } from 'geist/font/sans'
 
 import '../../styles/globals.css'
 import { Header } from '@/components/navigation/header'
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+import { AuthProvider } from '@/components/providers/auth'
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html
       className={`${GeistSans.variable} ${GeistMono.variable}`}
@@ -20,8 +25,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             enableSystem
             disableTransitionOnChange
           >
-            <Header />
-            {children}
+            <AuthProvider>
+              <Header />
+              {children}
+            </AuthProvider>
           </ThemeProvider>
         </main>
       </body>
