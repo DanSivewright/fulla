@@ -6,10 +6,12 @@ export async function Await<T>({
   promise,
   children,
 }: {
-  promise: Promise<T> | Promise<T>[]
-  children: (result: Awaited<T> | Awaited<T>[]) => JSX.Element
+  promise: Promise<T>
+  children: (result: Awaited<T>) => JSX.Element
 }) {
-  const results = Array.isArray(promise) ? await Promise.all(promise) : await promise
+  const results = Array.isArray(promise)
+    ? await Promise.all(promise)
+    : await promise
 
-  return children(results as Awaited<T> | Awaited<T>[])
+  return children(results as Awaited<T>)
 }
