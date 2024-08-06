@@ -29,29 +29,29 @@ type GetCollectionReturnType<T extends Collection> = PaginatedDocs<
 >
 
 async function getCollection<T extends Collection>(
-  options: CollectionOptions & { collection: T }
+  options: CollectionOptions & { collection: T },
+  headers?: Headers
 ): Promise<GetCollectionReturnType<T>> {
   const payload = await getPayloadHMR({ config: configPromise })
 
   let user
 
   if (!options.overrideAccess) {
-    const auth = await payload.auth({ headers: headers() })
+    const auth = await payload.auth({ headers })
     user = auth.user
   }
 
-  const collection = await payload.find({
-    ...options,
-    user,
-  })
+  const collection = await payload.find(options)
   return collection as GetCollectionReturnType<T>
 }
 
 export function getCachedCollection<T extends Collection>(
   options: CollectionOptions & { collection: T }
 ) {
+  const h = options.overrideAccess ? headers() : undefined
+
   return unstable_cache(
-    async () => getCollection(options),
+    async () => getCollection(options, h),
     [options.collection],
     { tags: [`collection_${options.collection}`] }
   ) as () => Promise<GetCollectionReturnType<T>>
