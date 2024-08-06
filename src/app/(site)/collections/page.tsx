@@ -1,4 +1,5 @@
 import { createPage } from "@/lib/create-page"
+import { fetchCachedCollection } from "@/lib/fetch-cached-collection"
 import { getCachedCollection } from "@/lib/get-cached-collection"
 import { Section } from "@/components/section"
 import { Title } from "@/components/title"
@@ -8,10 +9,10 @@ export const revalidate = 2400
 
 const { Page } = createPage({
   loader: async () => {
-    const collections = await getCachedCollection({
+    const collections = await fetchCachedCollection({
       collection: "collections",
-      overrideAccess: false,
-    })()
+    })
+
     return collections
   },
   component: ({ data }) => (

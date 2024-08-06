@@ -1,41 +1,40 @@
 // storage-adapter-import-placeholder
-import { postgresAdapter } from '@payloadcms/db-postgres'
-import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
-import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
-import { seoPlugin } from '@payloadcms/plugin-seo'
-import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
-
+import path from "path"
+import { fileURLToPath } from "url"
+import { postgresAdapter } from "@payloadcms/db-postgres"
+import { formBuilderPlugin } from "@payloadcms/plugin-form-builder"
+import { nestedDocsPlugin } from "@payloadcms/plugin-nested-docs"
+import { seoPlugin } from "@payloadcms/plugin-seo"
+import { GenerateTitle, GenerateURL } from "@payloadcms/plugin-seo/types"
 import {
   FixedToolbarFeature,
   HeadingFeature,
   lexicalEditor,
-} from '@payloadcms/richtext-lexical'
-import path from 'path'
-import { buildConfig } from 'payload'
-import { fileURLToPath } from 'url'
-import sharp from 'sharp'
+} from "@payloadcms/richtext-lexical"
+import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob"
+import { buildConfig } from "payload"
+import sharp from "sharp"
 
-import { Users } from './paylaod/collections/users'
-import { Media } from './paylaod/collections/media'
-import { Companies } from './paylaod/collections/companies'
-import { Properties } from './paylaod/collections/properties'
-import { PropertiesTypes } from './paylaod/collections/properties-types'
-import { Spaces } from './paylaod/collections/spaces'
-import { Bookings } from './paylaod/collections/bookings'
-import Categories from './paylaod/collections/categories'
-import { Posts } from './paylaod/collections/posts'
-import { Pages } from './paylaod/collections/pages'
-import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
-import { Page, Post } from './payload-types'
-import { Header } from './paylaod/globals/header/header'
-import { Footer } from './paylaod/globals/footer/footer'
-import { Collections } from './paylaod/collections/collections'
+import { Bookings } from "./paylaod/collections/bookings"
+import Categories from "./paylaod/collections/categories"
+import { Collections } from "./paylaod/collections/collections"
+import { Companies } from "./paylaod/collections/companies"
+import { Media } from "./paylaod/collections/media"
+import { Pages } from "./paylaod/collections/pages"
+import { Posts } from "./paylaod/collections/posts"
+import { Properties } from "./paylaod/collections/properties"
+import { PropertiesTypes } from "./paylaod/collections/properties-types"
+import { Spaces } from "./paylaod/collections/spaces"
+import { Users } from "./paylaod/collections/users"
+import { Footer } from "./paylaod/globals/footer/footer"
+import { Header } from "./paylaod/globals/header/header"
+import { Page, Post } from "./payload-types"
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | Fulla` : 'Fulla'
+  return doc?.title ? `${doc.title} | Fulla` : "Fulla"
 }
 
 // @ts-ignore
@@ -64,15 +63,18 @@ export default buildConfig({
   ],
   globals: [Header, Footer],
   editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || '',
+  secret: process.env.PAYLOAD_SECRET || "",
   typescript: {
-    outputFile: path.resolve(dirname, 'payload-types.ts'),
+    outputFile: path.resolve(dirname, "payload-types.ts"),
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.POSTGRES_URL || '',
+      connectionString: process.env.POSTGRES_URL || "",
     },
   }),
+  csrf: [process.env.NEXT_PUBLIC_SERVER_URL],
+  cors: [process.env.NEXT_PUBLIC_SERVER_URL],
+  serverURL: process.env.NEXT_PUBLIC_SERVER_URL,
   sharp,
   plugins: [
     vercelBlobStorage({
@@ -91,7 +93,7 @@ export default buildConfig({
       formOverrides: {
         fields: ({ defaultFields }) => {
           return defaultFields.map((field) => {
-            if ('name' in field && field.name === 'confirmationMessage') {
+            if ("name" in field && field.name === "confirmationMessage") {
               return {
                 ...field,
                 editor: lexicalEditor({
@@ -100,7 +102,7 @@ export default buildConfig({
                       ...rootFeatures,
                       FixedToolbarFeature(),
                       HeadingFeature({
-                        enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'],
+                        enabledHeadingSizes: ["h1", "h2", "h3", "h4"],
                       }),
                     ]
                   },
@@ -113,7 +115,7 @@ export default buildConfig({
       },
     }),
     nestedDocsPlugin({
-      collections: ['categories'],
+      collections: ["categories"],
     }),
     seoPlugin({
       generateTitle,
