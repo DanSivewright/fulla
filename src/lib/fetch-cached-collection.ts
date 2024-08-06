@@ -45,6 +45,7 @@ export const fetchCachedCollection = async <T extends Collection>(
         addQueryPrefix: true,
       }
     )
+
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_SERVER_URL}/api/${options.collection}${query}`,
       {
@@ -55,6 +56,7 @@ export const fetchCachedCollection = async <T extends Collection>(
           Authorization: `JWT ${cookies().get("payload-token").value}`,
         },
         next: {
+          revalidate: 2400,
           tags: [`collection_${options.collection}`],
         },
       }
