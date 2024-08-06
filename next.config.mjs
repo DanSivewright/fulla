@@ -15,6 +15,11 @@ const nextConfig = {
         hostname: "fulla.vercel.app",
         port: "",
       },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        port: "3000",
+      },
     ],
   },
 }

@@ -3,9 +3,7 @@ import Link from "next/link"
 import { Collection } from "@/payload-types"
 import { Bookmark, Plus } from "lucide-react"
 
-import { createPage } from "@/lib/create-page"
-import { fetchCachedCollection } from "@/lib/fetch-cached-collection"
-import { getCachedCollection } from "@/lib/get-cached-collection"
+import { fetchCollection } from "@/lib/fetch-collection"
 import { buttonVariants } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Await } from "@/components/await"
@@ -14,9 +12,6 @@ import { Section } from "@/components/section"
 import { Title } from "@/components/title"
 
 import { SearchCollections } from "./search-collections"
-
-// export const dynamic = "force-dynamic"
-// export const revalidate = 2400
 
 type Props = {
   searchParams: SearchParams
@@ -54,7 +49,7 @@ const CollectionsPage: React.FC<Props> = ({ searchParams }) => {
         }
       >
         <Await
-          promise={fetchCachedCollection({
+          promise={fetchCollection({
             collection: "collections",
             ...(searchParams.q
               ? {

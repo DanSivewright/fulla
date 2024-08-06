@@ -31,7 +31,7 @@ type GetCollectionReturnType<T extends Collection> = PaginatedDocs<
   Config["collections"][T]
 >
 
-export const fetchCachedCollection = async <T extends Collection>(
+export const fetchCollection = async <T extends Collection>(
   options: CollectionOptions
 ) => {
   const { where, sort } = options ?? {}
