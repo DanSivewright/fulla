@@ -72,3 +72,13 @@ export const fetchCachedCollection = async <T extends Collection>(
     }
   }
 }
+
+// console.log(
+//   "token value::: ",
+//   JSON.parse(
+//     Buffer.from(
+//       cookies().get("payload-token").value.split(".")[1],
+//       "base64"
+//     ).toString()
+//   )
+// )

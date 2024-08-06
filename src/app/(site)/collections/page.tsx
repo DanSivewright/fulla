@@ -15,8 +15,8 @@ import { Title } from "@/components/title"
 
 import { SearchCollections } from "./search-collections"
 
-export const dynamic = "force-dynamic"
-export const revalidate = 2400
+// export const dynamic = "force-dynamic"
+// export const revalidate = 2400
 
 type Props = {
   searchParams: SearchParams
