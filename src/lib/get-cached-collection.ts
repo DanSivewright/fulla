@@ -1,11 +1,11 @@
-import type { Config } from 'src/payload-types'
+import { unstable_cache } from "next/cache"
+import { headers } from "next/headers"
+import configPromise from "@payload-config"
+import { getPayloadHMR } from "@payloadcms/next/utilities"
+import { PaginatedDocs, PayloadRequest, RequestContext, Where } from "payload"
+import type { Config } from "src/payload-types"
 
-import configPromise from '@payload-config'
-import { getPayloadHMR } from '@payloadcms/next/utilities'
-import { unstable_cache } from 'next/cache'
-import { PaginatedDocs, PayloadRequest, RequestContext, Where } from 'payload'
-
-type Collection = keyof Config['collections']
+type Collection = keyof Config["collections"]
 
 export type CollectionOptions = {
   collection: Collection
@@ -25,24 +25,34 @@ export type CollectionOptions = {
 }
 
 type GetCollectionReturnType<T extends Collection> = PaginatedDocs<
-  Config['collections'][T]
+  Config["collections"][T]
 >
 
 async function getCollection<T extends Collection>(
-  options: CollectionOptions & { collection: T },
+  options: CollectionOptions & { collection: T }
 ): Promise<GetCollectionReturnType<T>> {
   const payload = await getPayloadHMR({ config: configPromise })
 
-  const collection = await payload.find(options)
+  let user
+
+  if (!options.overrideAccess) {
+    const auth = await payload.auth({ headers: headers() })
+    user = auth.user
+  }
+
+  const collection = await payload.find({
+    ...options,
+    user,
+  })
   return collection as GetCollectionReturnType<T>
 }
 
 export function getCachedCollection<T extends Collection>(
-  options: CollectionOptions & { collection: T },
+  options: CollectionOptions & { collection: T }
 ) {
   return unstable_cache(
     async () => getCollection(options),
     [options.collection],
-    { tags: [`collection_${options.collection}`] },
+    { tags: [`collection_${options.collection}`] }
   ) as () => Promise<GetCollectionReturnType<T>>
 }

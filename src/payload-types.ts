@@ -63,7 +63,7 @@ export interface User {
   id: number;
   company?: (number | null) | Company;
   name?: string | null;
-  role?: ('admin' | 'tenant' | 'manager') | null;
+  role?: ('admin' | 'tenant' | 'manager')[] | null;
   updatedAt: string;
   createdAt: string;
   email: string;

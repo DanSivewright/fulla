@@ -1,41 +1,42 @@
-import type { CollectionConfig } from 'payload'
+import type { CollectionConfig } from "payload"
 
 export const Users: CollectionConfig = {
-  slug: 'users',
+  slug: "users",
   admin: {
-    useAsTitle: 'email',
+    useAsTitle: "email",
   },
   auth: true,
   fields: [
     {
-      name: 'company',
-      label: 'Company',
-      type: 'relationship',
-      relationTo: 'companies',
+      name: "company",
+      label: "Company",
+      type: "relationship",
+      relationTo: "companies",
     },
     {
-      name: 'name',
-      label: 'Name',
-      type: 'text',
+      name: "name",
+      label: "Name",
+      type: "text",
     },
     {
-      name: 'role',
-      type: 'select',
+      name: "role",
+      type: "select",
+      hasMany: true,
       options: [
         {
-          label: 'Admin',
-          value: 'admin',
+          label: "Admin",
+          value: "admin",
         },
         {
-          label: 'Tenant',
-          value: 'tenant',
+          label: "Tenant",
+          value: "tenant",
         },
         {
-          label: 'Manager',
-          value: 'manager',
+          label: "Manager",
+          value: "manager",
         },
       ],
-      defaultValue: 'manager',
+      defaultValue: ["tenant"],
     },
     // Email added by default
     // Add more fields as needed
