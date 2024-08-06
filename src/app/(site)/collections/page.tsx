@@ -9,9 +9,13 @@ export const revalidate = 2400
 
 const { Page } = createPage({
   loader: async () => {
-    const collections = await fetchCachedCollection({
+    const collections = await getCachedCollection({
       collection: "collections",
-    })
+      overrideAccess: false,
+    })()
+    // const collections = await fetchCachedCollection({
+    //   collection: "collections",
+    // })
 
     return collections
   },
