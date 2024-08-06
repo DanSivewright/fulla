@@ -30,7 +30,7 @@ const Root: React.FC<Props> = async ({}) => {
                     equals: true,
                   },
                 },
-              })()}
+              })}
             >
               {(spaces) => (
                 <>

@@ -5,10 +5,14 @@ import { getPayloadHMR } from "@payloadcms/next/utilities"
 import { PaginatedDocs, PayloadRequest, RequestContext, Where } from "payload"
 import type { Config } from "src/payload-types"
 
-type Collection = keyof Config["collections"]
+type CollectionMap = Omit<
+  Config["collections"],
+  "payload-preferences" | "payload-migrations"
+>
+type Collection = keyof CollectionMap
 
-export type CollectionOptions<T extends Collection> = {
-  collection: T
+export type CollectionOptions = {
+  collection: Collection
   id?: string
   context?: RequestContext
   depth?: number
@@ -25,17 +29,10 @@ export type CollectionOptions<T extends Collection> = {
   where?: Where
 }
 
-type GetCollectionReturnType<
-  T extends Collection,
-  O extends CollectionOptions<T>
-> = O["id"] extends string
-  ? Config["collections"][T]
-  : PaginatedDocs<Config["collections"][T]>
-
-async function fetchCollection<
-  T extends Collection,
-  O extends CollectionOptions<T>
->(options: O, headers?: Headers): Promise<GetCollectionReturnType<T, O>> {
+async function getCollectionById<T extends Collection>(
+  options: CollectionOptions & { collection: T; id: string },
+  headers?: Headers
+): Promise<CollectionMap[T]> {
   const payload = await getPayloadHMR({ config: configPromise })
 
   let user
@@ -45,42 +42,25 @@ async function fetchCollection<
     user = auth.user
   }
 
-  const collection = options.id
-    ? await payload.findByID({
-        ...options,
-        id: options.id,
-      })
-    : await payload.find(options)
-
-  return collection as GetCollectionReturnType<T, O>
+  const collection = await payload.findByID(options)
+  return collection as CollectionMap[T]
 }
 
-export function getCollection<
-  T extends Collection,
-  O extends CollectionOptions<T>
->(options: O) {
-  const h = options.overrideAccess ? headers() : undefined
+async function getCollection<T extends Collection>(
+  options: Omit<CollectionOptions, "id"> & { collection: T },
+  headers?: Headers
+): Promise<PaginatedDocs<CollectionMap[T]>> {
+  const payload = await getPayloadHMR({ config: configPromise })
 
-  return unstable_cache(
-    async () => fetchCollection(options, h),
-    [options.collection],
-    {
-      tags: [`collection_${options.collection}${options.id ? options.id : ""}`],
-    }
-  ) as () => Promise<GetCollectionReturnType<T, O>>
+  let user
+
+  if (!options.overrideAccess) {
+    const auth = await payload.auth({ headers })
+    user = auth.user
+  }
+
+  const collection = await payload.find(options)
+  return collection as PaginatedDocs<CollectionMap[T]>
 }
 
-// export function getCollection<
-//   T extends Collection,
-//   O extends CollectionOptions & { collection: T }
-// >(options: O) {
-//   const h = options.overrideAccess ? headers() : undefined
-
-//   return unstable_cache(
-//     async () => fetchCollection(options, h),
-//     [options.collection],
-//     {
-//       tags: [`collection_${options.collection}${options.id ? options.id : ""}`],
-//     }
-//   ) as () => Promise<GetCollectionReturnType<T, O>>
-// }
+export { getCollectionById, getCollection }

@@ -1,6 +1,10 @@
 import { Suspense } from "react"
 
-import { getCollection } from "@/lib/get-collection"
+import {
+  CollectionOptions,
+  getCollection,
+  getCollectionById,
+} from "@/lib/get-collection"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -18,7 +22,7 @@ type Props = {
   params: { id: string }
   searchParams: SearchParams
 }
-const SingleCollectionPage: React.FC<Props> = ({
+const SingleCollectionPage: React.FC<Props> = async ({
   params: { id },
   searchParams,
 }) => {
@@ -51,7 +55,7 @@ const SingleCollectionPage: React.FC<Props> = ({
           </div>
         }
       >
-        <Await promise={getCollection({ collection: "collections", id })()}>
+        <Await promise={getCollectionById({ collection: "collections", id })}>
           {(collection) => <pre>{JSON.stringify(collection, null, 2)}</pre>}
         </Await>
       </Suspense>
