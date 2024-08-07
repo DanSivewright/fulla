@@ -48,15 +48,6 @@ const Root: React.FC<Props> = async ({}) => {
             </Await>
           </Suspense>
         </Section>
-        {/* <ul className="flex flex-col gap-2">
-          {Array(100)
-            .fill(null)
-            .map((_, i) => (
-              <li className="w-full p-4 rounded-lg bg-accent" key={i}>
-                {i + 1}
-              </li>
-            ))}
-        </ul> */}
       </div>
     </>
   )
