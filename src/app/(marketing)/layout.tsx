@@ -8,7 +8,7 @@ import { ThemeProvider } from "@/components/providers/theme-provider"
 
 import "../../styles/globals.css"
 
-import { AuthProvider } from "@/components/providers/auth"
+import { NextAuthSessionProvider } from "@/components/providers/next-auth-session-provider"
 
 export default async function RootLayout({
   children,
@@ -30,10 +30,10 @@ export default async function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <AuthProvider>
+            <NextAuthSessionProvider>
               <MarketingHeader header={header} />
               {children}
-            </AuthProvider>
+            </NextAuthSessionProvider>
           </ThemeProvider>
         </main>
       </body>

@@ -1,6 +1,7 @@
 import { Suspense } from "react"
 import { Space } from "@/payload-types"
 
+import { auth } from "@/lib/auth"
 import { getCollection } from "@/lib/get-collection"
 import { Await } from "@/components/await"
 import { SpaceCard } from "@/components/cards/space-card"
@@ -16,10 +17,13 @@ const Root: React.FC<Props> = async ({}) => {
     <>
       <SiteHero />
       <div className="container relative z-0">
-        <Title className="font-mono font-semibold" level={1} showAs={2}>
+        <Title level={1} showAs={3}>
           Browse
         </Title>
         <Section side="b">
+          {/* <pre>
+            <code>{JSON.stringify(me, null, 2)}</code>
+          </pre> */}
           <Suspense fallback="loading...">
             <Await
               promise={getCollection({
