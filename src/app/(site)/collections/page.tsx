@@ -3,7 +3,9 @@ import Link from "next/link"
 import { Collection } from "@/payload-types"
 import { Bookmark, Plus } from "lucide-react"
 
+import { auth } from "@/lib/auth"
 import { fetchCollection } from "@/lib/fetch-collection"
+import { getCollection } from "@/lib/get-collection"
 import { buttonVariants } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Await } from "@/components/await"
@@ -16,7 +18,8 @@ import { SearchCollections } from "./search-collections"
 type Props = {
   searchParams: SearchParams
 }
-const CollectionsPage: React.FC<Props> = ({ searchParams }) => {
+const CollectionsPage: React.FC<Props> = async ({ searchParams }) => {
+  const session = await auth()
   return (
     <Section>
       <Title className="gutter">Collections</Title>
@@ -49,18 +52,35 @@ const CollectionsPage: React.FC<Props> = ({ searchParams }) => {
         }
       >
         <Await
-          promise={fetchCollection({
-            collection: "collections",
-            ...(searchParams.q
-              ? {
-                  where: {
-                    name: {
-                      contains: searchParams.q,
+          promise={getCollection(
+            {
+              collection: "collections",
+              overrideAccess: false,
+              user: session.user,
+              ...(searchParams.q
+                ? {
+                    where: {
+                      name: {
+                        contains: searchParams.q,
+                      },
                     },
-                  },
-                }
-              : {}),
-          })}
+                  }
+                : {}),
+            },
+            3600
+          )()}
+          // promise={fetchCollection({
+          //   collection: "collections",
+          //   ...(searchParams.q
+          //     ? {
+          //         where: {
+          //           name: {
+          //             contains: searchParams.q,
+          //           },
+          //         },
+          //       }
+          //     : {}),
+          // })}
         >
           {({ docs }) => (
             <>

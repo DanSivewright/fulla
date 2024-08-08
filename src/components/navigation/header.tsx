@@ -1,29 +1,31 @@
-'use client'
+"use client"
 
-import { motion } from 'framer-motion'
-import { useLocalStorage } from '@/hooks/use-local-storage'
-import { cn } from '@/lib/utils'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { useState } from 'react'
-import { Avatar, AvatarFallback } from '../ui/avatar'
-import { SearchIcon } from 'lucide-react'
-import { Input } from '../ui/input'
+import { useEffect, useState } from "react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { motion } from "framer-motion"
+import { SearchIcon } from "lucide-react"
+
+import { cn } from "@/lib/utils"
+import { useLocalStorage } from "@/hooks/use-local-storage"
+
+import { Avatar, AvatarFallback } from "../ui/avatar"
+import { Input } from "../ui/input"
 
 type Props = {}
 
 const nav = [
   {
-    title: 'Home',
-    href: '/',
+    title: "Home",
+    href: "/",
   },
   {
-    title: 'Collections',
-    href: '/collections',
+    title: "Collections",
+    href: "/collections",
   },
   {
-    title: 'Blog',
-    href: '/blog',
+    title: "Blog",
+    href: "/blog",
   },
 ]
 
@@ -31,30 +33,36 @@ export const Header: React.FC<Props> = ({}) => {
   const path = usePathname()
 
   const [activeTab, setActiveTab] = useState(path ?? nav[0].href)
-  const [hoveredTab, setHoveredTab] = useState<string | null>(path ?? nav[0].href)
+  const [hoveredTab, setHoveredTab] = useState<string | null>(
+    path ?? nav[0].href
+  )
 
   const [hidden, setHidden] = useLocalStorage({
-    key: 'nav-hidden',
+    key: "nav-hidden",
     defaultValue: false,
   })
   const [background, setBackground] = useLocalStorage({
-    key: 'nav-background',
+    key: "nav-background",
     defaultValue: true,
   })
   const [blur, setBlur] = useLocalStorage({
-    key: 'nav-blur',
+    key: "nav-blur",
     defaultValue: false,
   })
+
+  useEffect(() => {
+    if (path.includes("login")) setHidden(true)
+  }, [path])
 
   return (
     <header
       className={cn(
-        'gutter sticky top-0 z-50 grid grid-cols-3 items-center gap-3 py-2 transition duration-300 ease-in-out',
+        "gutter sticky top-0 z-50 grid grid-cols-3 items-center gap-3 py-2 transition duration-300 ease-in-out",
         {
           hidden: hidden,
-          'bg-background': background,
-          'bg-background/10 backdrop-blur': blur,
-        },
+          "bg-background": background,
+          "bg-background/10 backdrop-blur": blur,
+        }
       )}
     >
       <div className="flex items-center gap-3">
@@ -70,7 +78,7 @@ export const Header: React.FC<Props> = ({}) => {
               key={href}
               onClick={() => setActiveTab(href)}
               className={cn(
-                'relative rounded-full px-3 py-1.5 text-sm text-white transition hover:text-white/50 focus-visible:outline-2',
+                "relative rounded-full px-3 py-1.5 text-sm text-white transition hover:text-white/50 focus-visible:outline-2"
               )}
             >
               <motion.div onHoverStart={() => setHoveredTab(href)}>
@@ -83,7 +91,7 @@ export const Header: React.FC<Props> = ({}) => {
                       borderRadius: 9999,
                     }}
                     transition={{
-                      type: 'spring',
+                      type: "spring",
                       bounce: 0.2,
                       duration: 0.6,
                     }}
@@ -104,15 +112,15 @@ export const Header: React.FC<Props> = ({}) => {
                       opacity: 0,
                     }}
                     transition={{
-                      type: 'spring',
+                      type: "spring",
                       bounce: 0.2,
                       duration: 0.6,
                     }}
                   />
                 )}
                 <span
-                  className={cn('relative z-10 mix-blend-exclusion', {
-                    'text-white': activeTab === href,
+                  className={cn("relative z-10 mix-blend-exclusion", {
+                    "text-white": activeTab === href,
                   })}
                 >
                   {title}
@@ -125,10 +133,10 @@ export const Header: React.FC<Props> = ({}) => {
 
       <div
         className={cn(
-          'flex items-center justify-between gap-3 rounded-full border border-input bg-background px-4 transition duration-300 ease-in-out',
+          "flex items-center justify-between gap-3 rounded-full border border-input bg-background px-4 transition duration-300 ease-in-out",
           {
-            'bg-muted-foreground/10': background,
-          },
+            "bg-muted-foreground/10": background,
+          }
         )}
       >
         <SearchIcon size={14} className="text-muted-foreground/50" />
@@ -136,8 +144,8 @@ export const Header: React.FC<Props> = ({}) => {
           //   onFocus={() => setOpen(true)}
           className="grow"
           placeholder="Discover the ideal space to grow your business..."
-          variant={'ghost'}
-          rounded={'full'}
+          variant={"ghost"}
+          rounded={"full"}
         />
         <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
           <span className="text-xs">⌘</span>K

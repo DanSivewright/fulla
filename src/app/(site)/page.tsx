@@ -1,4 +1,5 @@
 import { Suspense } from "react"
+import { headers } from "next/headers"
 import { Space } from "@/payload-types"
 
 import { auth } from "@/lib/auth"
@@ -34,7 +35,7 @@ const Root: React.FC<Props> = async ({}) => {
                     equals: true,
                   },
                 },
-              })}
+              })()}
             >
               {(spaces) => (
                 <>

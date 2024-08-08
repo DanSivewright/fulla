@@ -4,6 +4,7 @@ import { Collection, Space } from "@/payload-types"
 import { Bookmark, Loader2, MoreVertical, Search } from "lucide-react"
 import { PaginatedDocs } from "payload"
 
+import { auth } from "@/lib/auth"
 import { fetchCollection } from "@/lib/fetch-collection"
 import { getCollection, getCollectionById } from "@/lib/get-collection"
 import {
@@ -35,17 +36,20 @@ type Props = {
   searchParams: SearchParams
 }
 
-const cacheCollection = cache((id) =>
-  getCollectionById({
+const cacheCollection = cache(async (id, user) => {
+  return await getCollectionById({
     collection: "collections",
+    overrideAccess: false,
+    user,
     id,
-  })
-)
+  })()
+})
 
 const SingleCollectionPage: React.FC<Props> = async ({
   params: { id },
   searchParams,
 }) => {
+  const { user } = await auth()
   return (
     <Section>
       <div className="gutter">
@@ -64,7 +68,13 @@ const SingleCollectionPage: React.FC<Props> = async ({
                 </BreadcrumbItem>
               }
             >
-              <Await promise={fetchCollection({ collection: "collections" })}>
+              <Await
+                promise={getCollection({
+                  collection: "collections",
+                  overrideAccess: false,
+                  user,
+                })()}
+              >
                 {(collections: PaginatedDocs<Collection>) => (
                   <BreadcrumbItem>
                     <DropdownMenu>
@@ -97,14 +107,14 @@ const SingleCollectionPage: React.FC<Props> = async ({
             <Skeleton className="my-6 h-10 w-1/2 lg:my-7 lg:h-11 xl:my-8 xl:h-14" />
           }
         >
-          <Await promise={cacheCollection(id)}>
+          <Await promise={cacheCollection(id, user)}>
             {(col) => <Title showAs={2}>{col.name}</Title>}
           </Await>
         </Suspense>
       </div>
       <Gutter>
         <Suspense>
-          <Await promise={cacheCollection(id)}>
+          <Await promise={cacheCollection(id, user)}>
             {(col) => (
               <>
                 {col.spaces?.length ? (

@@ -27,40 +27,61 @@ export type CollectionOptions = {
   showHiddenFields?: boolean
   sort?: string
   where?: Where
+  user?: any
 }
 
-async function getCollectionById<T extends Collection>(
-  options: CollectionOptions & { collection: T; id: string },
-  headers?: Headers
+async function fetchCollectionById<T extends Collection>(
+  options: CollectionOptions & { collection: T; id: string }
 ): Promise<CollectionMap[T]> {
   const payload = await getPayloadHMR({ config: configPromise })
-
-  let user
-
-  if (!options.overrideAccess) {
-    const auth = await payload.auth({ headers })
-    user = auth.user
-  }
 
   const collection = await payload.findByID(options)
   return collection as CollectionMap[T]
 }
 
-async function getCollection<T extends Collection>(
-  options: Omit<CollectionOptions, "id"> & { collection: T },
-  headers?: Headers
+async function fetchCollection<T extends Collection>(
+  options: Omit<CollectionOptions, "id"> & { collection: T }
 ): Promise<PaginatedDocs<CollectionMap[T]>> {
   const payload = await getPayloadHMR({ config: configPromise })
 
-  let user
-
-  if (!options.overrideAccess) {
-    const auth = await payload.auth({ headers })
-    user = auth.user
-  }
-
-  const collection = await payload.find(options)
+  const collection = await payload.find({
+    ...options,
+  })
   return collection as PaginatedDocs<CollectionMap[T]>
 }
 
-export { getCollectionById, getCollection }
+export function getCollection<T extends Collection>(
+  options: CollectionOptions & { collection: T },
+  revalidate?: number
+) {
+  return unstable_cache(
+    async () => fetchCollection(options),
+    [options.collection],
+    {
+      ...(revalidate ? { revalidate } : {}),
+      tags: [
+        `collection_${options.collection}${
+          options.user ? `_${options.user?.id}` : ""
+        }`,
+      ],
+    }
+  )
+}
+
+export function getCollectionById<T extends Collection>(
+  options: CollectionOptions & { collection: T; id: string },
+  revalidate?: number
+) {
+  return unstable_cache(
+    async () => fetchCollectionById(options),
+    [options.collection, options.id],
+    {
+      ...(revalidate ? { revalidate } : {}),
+      tags: [
+        `collection_${options.collection}_${options.id}${
+          options.user ? `_${options.user?.id}` : ""
+        }`,
+      ],
+    }
+  )
+}
