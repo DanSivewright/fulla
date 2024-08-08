@@ -34,7 +34,7 @@ export const SiteHero: React.FC<Props> = ({}) => {
     onChange(inView) {
       if (inView) {
         if (hidden) {
-          setHidden(true)
+          setHidden(false)
         }
         console.log(
           "have i triggered scroll state::: ",

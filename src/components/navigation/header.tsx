@@ -52,6 +52,7 @@ export const Header: React.FC<Props> = ({}) => {
 
   useEffect(() => {
     if (path.includes("login")) setHidden(true)
+    else setHidden(false)
   }, [path])
 
   return (
