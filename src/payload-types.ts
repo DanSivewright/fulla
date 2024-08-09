@@ -933,6 +933,7 @@ export interface Space {
   slug?: string | null;
   property: string | Property;
   manager?: (string | null) | User;
+  company?: (string | null) | Company;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;

@@ -12,6 +12,7 @@ export const Users: CollectionConfig = {
       label: "Company",
       type: "relationship",
       relationTo: "companies",
+      saveToJWT: true,
     },
     {
       name: "name",

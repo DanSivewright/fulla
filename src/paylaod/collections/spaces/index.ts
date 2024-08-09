@@ -17,6 +17,7 @@ import {
 } from "@payloadcms/plugin-seo/fields"
 import { CollectionConfig } from "payload"
 
+import { populateCompany } from "./hooks/populate-company"
 import { revalidateSpaces } from "./hooks/revalidate-spaces"
 
 export const Spaces: CollectionConfig = {
@@ -196,14 +197,30 @@ export const Spaces: CollectionConfig = {
         position: "sidebar",
       },
     },
+    {
+      name: "company",
+      label: "Company",
+      type: "relationship",
+      relationTo: "companies",
+      access: {
+        read: ({ req: { user } }) => {
+          if (user?.role?.includes("admin")) return true
+          return false
+        },
+      },
+      admin: {
+        position: "sidebar",
+      },
+    },
   ],
   hooks: {
     afterChange: [revalidateSpaces],
+    beforeChange: [populateCompany],
   },
   versions: {
     drafts: {
       autosave: {
-        interval: 100, // We set this interval for optimal live preview
+        interval: 1000 * 60, // We set this interval for optimal live preview
       },
     },
     maxPerDoc: 5,

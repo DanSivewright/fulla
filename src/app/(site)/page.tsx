@@ -38,8 +38,8 @@ const Root: React.FC<Props> = async ({}) => {
             Find your next space now
           </Title>
           <Paragraph className="bg-clip-text text-transparent drop-shadow-2xl bg-gradient-to-b from-white/80 to-white/20 pointer-events-none select-none text-pretty">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Neque,
-            sapiente amet.
+            Transforming offices, empowering individuals – your workspace
+            revolution.
           </Paragraph>
           <div
             style={{
@@ -81,6 +81,20 @@ const Root: React.FC<Props> = async ({}) => {
         <Title level={1} showAs={3}>
           Browse
         </Title>
+        <Suspense>
+          <Await
+            promise={getCollection({
+              collection: "companies",
+              depth: 1,
+            })()}
+          >
+            {(orgs) => (
+              <pre>
+                <code>{JSON.stringify(orgs, null, 2)}</code>
+              </pre>
+            )}
+          </Await>
+        </Suspense>
         <Section side="b">
           {/* <pre>
             <code>{JSON.stringify(me, null, 2)}</code>
