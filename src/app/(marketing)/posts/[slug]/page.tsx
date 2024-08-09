@@ -1,10 +1,11 @@
-import { CollectionRelated } from '@/components/collection-related'
-import { PostHero } from '@/components/hero/post-hero'
-import RichText from '@/components/rich-text'
-import { createPage } from '@/lib/create-page'
-import config from '@payload-config'
-import { getPayloadHMR } from '@payloadcms/next/utilities'
-import { redirect } from 'next/navigation'
+import { redirect } from "next/navigation"
+import config from "@payload-config"
+import { getPayloadHMR } from "@payloadcms/next/utilities"
+
+import { createPage } from "@/lib/create-page"
+import { CollectionRelated } from "@/components/collection-related"
+import { PostHero } from "@/components/hero/post-hero"
+import RichText from "@/components/rich-text"
 
 const { Page } = createPage({
   loader: async ({ params: { slug } }) => {
@@ -13,7 +14,7 @@ const { Page } = createPage({
   },
   component: ({ data: post }) => {
     if (!post) {
-      redirect('/posts')
+      redirect("/posts")
     }
     return (
       <article className="pt-16 pb-16">
@@ -31,7 +32,9 @@ const { Page } = createPage({
           <CollectionRelated
             className="mt-12"
             // @ts-ignore
-            docs={post.relatedPosts.filter((post) => typeof post !== 'string')}
+            docs={post?.relatedPosts?.filter(
+              (post) => typeof post !== "string"
+            )}
           />
         </div>
       </article>
@@ -41,12 +44,12 @@ const { Page } = createPage({
 export default Page
 
 export async function generateStaticParams() {
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === "development") {
     return []
   }
   const payload = await getPayloadHMR({ config })
   const posts = await payload.find({
-    collection: 'posts',
+    collection: "posts",
     draft: false,
     limit: 1000,
   })
@@ -58,7 +61,7 @@ const queryPostBySlug = async ({ slug }: { slug: string }) => {
   const payload = await getPayloadHMR({ config })
 
   const result = await payload.find({
-    collection: 'posts',
+    collection: "posts",
     limit: 1,
     where: {
       slug: {
