@@ -28,7 +28,7 @@ export interface Config {
     'payload-migrations': PayloadMigration;
   };
   db: {
-    defaultIDType: number;
+    defaultIDType: string;
   };
   globals: {
     header: Header;
@@ -60,8 +60,8 @@ export interface UserAuthOperations {
  * via the `definition` "users".
  */
 export interface User {
-  id: number;
-  company?: (number | null) | Company;
+  id: string;
+  company?: (string | null) | Company;
   name?: string | null;
   role?: ('admin' | 'tenant' | 'manager')[] | null;
   updatedAt: string;
@@ -80,7 +80,7 @@ export interface User {
  * via the `definition` "companies".
  */
 export interface Company {
-  id: number;
+  id: string;
   name: string;
   description?: {
     root: {
@@ -106,7 +106,7 @@ export interface Company {
  * via the `definition` "media".
  */
 export interface Media {
-  id: number;
+  id: string;
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -125,12 +125,12 @@ export interface Media {
  * via the `definition` "categories".
  */
 export interface Category {
-  id: number;
+  id: string;
   title: string;
-  parent?: (number | null) | Category;
+  parent?: (string | null) | Category;
   breadcrumbs?:
     | {
-        doc?: (number | null) | Category;
+        doc?: (string | null) | Category;
         url?: string | null;
         label?: string | null;
         id?: string | null;
@@ -144,7 +144,7 @@ export interface Category {
  * via the `definition` "posts".
  */
 export interface Post {
-  id: number;
+  id: string;
   title: string;
   content: {
     root: {
@@ -161,15 +161,15 @@ export interface Post {
     };
     [k: string]: unknown;
   };
-  relatedPosts?: (number | Post)[] | null;
-  categories?: (number | Category)[] | null;
+  relatedPosts?: (string | Post)[] | null;
+  categories?: (string | Category)[] | null;
   meta?: {
     title?: string | null;
-    image?: number | Media | null;
+    image?: string | Media | null;
     description?: string | null;
   };
   publishedAt?: string | null;
-  authors?: (number | User)[] | null;
+  authors?: (string | User)[] | null;
   populatedAuthors?:
     | {
         id?: string | null;
@@ -186,7 +186,7 @@ export interface Post {
  * via the `definition` "pages".
  */
 export interface Page {
-  id: number;
+  id: string;
   title: string;
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
@@ -212,7 +212,7 @@ export interface Page {
             newTab?: boolean | null;
             reference?: {
               relationTo: 'pages';
-              value: number | Page;
+              value: string | Page;
             } | null;
             url?: string | null;
             label: string;
@@ -221,7 +221,7 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
-    media?: number | Media | null;
+    media?: string | Media | null;
   };
   layout: (
     | {
@@ -247,7 +247,7 @@ export interface Page {
                 newTab?: boolean | null;
                 reference?: {
                   relationTo: 'pages';
-                  value: number | Page;
+                  value: string | Page;
                 } | null;
                 url?: string | null;
                 label: string;
@@ -293,7 +293,7 @@ export interface Page {
                 };
                 [k: string]: unknown;
               } | null;
-              image: number | Media;
+              image: string | Media;
               id?: string | null;
             }[]
           | null;
@@ -328,7 +328,7 @@ export interface Page {
                 newTab?: boolean | null;
                 reference?: {
                   relationTo: 'pages';
-                  value: number | Page;
+                  value: string | Page;
                 } | null;
                 url?: string | null;
                 label: string;
@@ -343,7 +343,7 @@ export interface Page {
       }
     | {
         position?: ('default' | 'fullscreen') | null;
-        media: number | Media;
+        media: string | Media;
         id?: string | null;
         blockName?: string | null;
         blockType: 'mediaBlock';
@@ -366,12 +366,12 @@ export interface Page {
         } | null;
         populateBy?: ('collection' | 'selection') | null;
         relationTo?: 'posts' | null;
-        categories?: (number | Category)[] | null;
+        categories?: (string | Category)[] | null;
         limit?: number | null;
         selectedDocs?:
           | {
               relationTo: 'posts';
-              value: number | Post;
+              value: string | Post;
             }[]
           | null;
         id?: string | null;
@@ -379,7 +379,7 @@ export interface Page {
         blockType: 'archive';
       }
     | {
-        form: number | Form;
+        form: string | Form;
         enableIntro?: boolean | null;
         introContent?: {
           root: {
@@ -406,15 +406,15 @@ export interface Page {
               blocks?:
                 | ({
                     relationTo: 'pages';
-                    value: number | Page;
+                    value: string | Page;
                   } | null)
                 | ({
                     relationTo: 'posts';
-                    value: number | Post;
+                    value: string | Post;
                   } | null)
                 | ({
                     relationTo: 'spaces';
-                    value: number | Space;
+                    value: string | Space;
                   } | null);
               id?: string | null;
             }[]
@@ -432,7 +432,7 @@ export interface Page {
   )[];
   meta?: {
     title?: string | null;
-    image?: number | Media | null;
+    image?: string | Media | null;
     description?: string | null;
   };
   publishedAt?: string | null;
@@ -446,7 +446,7 @@ export interface Page {
  * via the `definition` "forms".
  */
 export interface Form {
-  id: number;
+  id: string;
   title: string;
   fields?:
     | (
@@ -610,10 +610,10 @@ export interface Form {
  * via the `definition` "spaces".
  */
 export interface Space {
-  id: number;
+  id: string;
   name: string;
-  featureImage?: (number | null) | Media;
-  categories?: (number | Category)[] | null;
+  featureImage?: (string | null) | Media;
+  categories?: (string | Category)[] | null;
   description?: {
     root: {
       type: string;
@@ -630,9 +630,9 @@ export interface Space {
     [k: string]: unknown;
   } | null;
   slug?: string | null;
-  property: number | Property;
+  property: string | Property;
   public?: boolean | null;
-  manager?: (number | null) | User;
+  manager?: (string | null) | User;
   type?:
     | (
         | 'office'
@@ -695,7 +695,7 @@ export interface Space {
  * via the `definition` "properties".
  */
 export interface Property {
-  id: number;
+  id: string;
   name: string;
   description?: {
     root: {
@@ -714,9 +714,9 @@ export interface Property {
   } | null;
   slug?: string | null;
   address: string;
-  type: number | PropertiesType;
-  company: number | Company;
-  managers?: (number | User)[] | null;
+  type: string | PropertiesType;
+  company: string | Company;
+  managers?: (string | User)[] | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -725,7 +725,7 @@ export interface Property {
  * via the `definition` "propertiesTypes".
  */
 export interface PropertiesType {
-  id: number;
+  id: string;
   name: string;
   description?: string | null;
   slug?: string | null;
@@ -737,13 +737,13 @@ export interface PropertiesType {
  * via the `definition` "bookings".
  */
 export interface Booking {
-  id: number;
+  id: string;
   reason: string;
   additionalInfo?: string | null;
   startTime: string;
   endTime: string;
-  space: number | Space;
-  tenants: (number | User)[];
+  space: string | Space;
+  tenants: (string | User)[];
   updatedAt: string;
   createdAt: string;
 }
@@ -752,11 +752,11 @@ export interface Booking {
  * via the `definition` "collections".
  */
 export interface Collection {
-  id: number;
+  id: string;
   name: string;
   description?: string | null;
-  spaces?: (number | Space)[] | null;
-  user: number | User;
+  spaces?: (string | Space)[] | null;
+  user: string | User;
   updatedAt: string;
   createdAt: string;
 }
@@ -765,8 +765,8 @@ export interface Collection {
  * via the `definition` "form-submissions".
  */
 export interface FormSubmission {
-  id: number;
-  form: number | Form;
+  id: string;
+  form: string | Form;
   submissionData?:
     | {
         field: string;
@@ -782,10 +782,10 @@ export interface FormSubmission {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: number;
+  id: string;
   user: {
     relationTo: 'users';
-    value: number | User;
+    value: string | User;
   };
   key?: string | null;
   value?:
@@ -805,7 +805,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: number;
+  id: string;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -816,7 +816,7 @@ export interface PayloadMigration {
  * via the `definition` "header".
  */
 export interface Header {
-  id: number;
+  id: string;
   navItems?:
     | {
         link: {
@@ -824,7 +824,7 @@ export interface Header {
           newTab?: boolean | null;
           reference?: {
             relationTo: 'pages';
-            value: number | Page;
+            value: string | Page;
           } | null;
           url?: string | null;
           label: string;
@@ -840,7 +840,7 @@ export interface Header {
  * via the `definition` "footer".
  */
 export interface Footer {
-  id: number;
+  id: string;
   navItems?:
     | {
         link: {
@@ -848,7 +848,7 @@ export interface Footer {
           newTab?: boolean | null;
           reference?: {
             relationTo: 'pages';
-            value: number | Page;
+            value: string | Page;
           } | null;
           url?: string | null;
           label: string;

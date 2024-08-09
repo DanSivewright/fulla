@@ -1,7 +1,7 @@
 // storage-adapter-import-placeholder
 import path from "path"
 import { fileURLToPath } from "url"
-import { postgresAdapter } from "@payloadcms/db-postgres"
+import { mongooseAdapter } from "@payloadcms/db-mongodb"
 import { formBuilderPlugin } from "@payloadcms/plugin-form-builder"
 import { nestedDocsPlugin } from "@payloadcms/plugin-nested-docs"
 import { seoPlugin } from "@payloadcms/plugin-seo"
@@ -67,11 +67,14 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, "payload-types.ts"),
   },
-  db: postgresAdapter({
-    pool: {
-      connectionString: process.env.POSTGRES_URL || "",
-    },
+  db: mongooseAdapter({
+    url: process.env.DATABASE_URI || "",
   }),
+  // db: postgresAdapter({
+  //   pool: {
+  //     connectionString: process.env.POSTGRES_URL || "",
+  //   },
+  // }),
   csrf: [process.env.NEXT_PUBLIC_SERVER_URL],
   cors: [process.env.NEXT_PUBLIC_SERVER_URL],
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL,

@@ -1,33 +1,32 @@
-import type { CollectionConfig } from 'payload'
-
-import { Archive } from '../../blocks/archive-block'
-import { CallToAction } from '../../blocks/call-to-action'
-import { Content } from '../../blocks/content'
-import { MediaBlock } from '../../blocks/media-block'
-import { hero } from '../../fields/hero'
-
-import { revalidatePage } from './hooks/revalidate-page'
-import { FormBlock } from '@/paylaod/blocks/form'
-import { slugField } from '@/paylaod/fields/slug-field'
-import { populatePublishedAt } from '@/paylaod/utils/populate-published-at'
-
+import { Archive } from "@/paylaod/blocks/archive-block"
+import { BentoBlock } from "@/paylaod/blocks/bento-block"
+import { CallToAction } from "@/paylaod/blocks/call-to-action"
+import { Carousel } from "@/paylaod/blocks/carousel"
+import { Content } from "@/paylaod/blocks/content"
+import { FormBlock } from "@/paylaod/blocks/form"
+import { MediaBlock } from "@/paylaod/blocks/media-block"
+import { TextHero } from "@/paylaod/blocks/text-hero"
+import { slugField } from "@/paylaod/fields/slug-field"
+import { populatePublishedAt } from "@/paylaod/utils/populate-published-at"
 import {
   MetaDescriptionField,
   MetaImageField,
   MetaTitleField,
   OverviewField,
   PreviewField,
-} from '@payloadcms/plugin-seo/fields'
-import { BentoBlock } from '@/paylaod/blocks/bento-block'
-import { TextHero } from '@/paylaod/blocks/text-hero'
-import { Carousel } from '@/paylaod/blocks/carousel'
+} from "@payloadcms/plugin-seo/fields"
+import type { CollectionConfig } from "payload"
+
+import { hero } from "../../fields/hero"
+import { revalidatePage } from "./hooks/revalidate-page"
+
 export const Pages: CollectionConfig = {
-  slug: 'pages',
+  slug: "pages",
   access: {
     read: () => true,
   },
   admin: {
-    defaultColumns: ['title', 'slug', 'updatedAt'],
+    defaultColumns: ["title", "slug", "updatedAt"],
     // livePreview: {
     //   url: ({ data }) => {
     //     const path = generatePreviewPath({
@@ -38,26 +37,26 @@ export const Pages: CollectionConfig = {
     // },
     // preview: (doc) =>
     //   generatePreviewPath({ path: `/${typeof doc?.slug === 'string' ? doc.slug : ''}` }),
-    useAsTitle: 'title',
+    useAsTitle: "title",
   },
   fields: [
     {
-      name: 'title',
-      type: 'text',
+      name: "title",
+      type: "text",
       required: true,
     },
     {
-      type: 'tabs',
+      type: "tabs",
       tabs: [
         {
           fields: [hero],
-          label: 'Hero',
+          label: "Hero",
         },
         {
           fields: [
             {
-              name: 'layout',
-              type: 'blocks',
+              name: "layout",
+              type: "blocks",
               blocks: [
                 CallToAction,
                 Carousel,
@@ -71,43 +70,43 @@ export const Pages: CollectionConfig = {
               required: true,
             },
           ],
-          label: 'Content',
+          label: "Content",
         },
         {
-          name: 'meta',
-          label: 'SEO',
+          name: "meta",
+          label: "SEO",
           fields: [
             OverviewField({
-              titlePath: 'meta.title',
-              descriptionPath: 'meta.description',
-              imagePath: 'meta.image',
+              titlePath: "meta.title",
+              descriptionPath: "meta.description",
+              imagePath: "meta.image",
             }),
             MetaTitleField({
               hasGenerateFn: true,
             }),
             MetaImageField({
-              relationTo: 'media',
+              relationTo: "media",
             }),
             MetaDescriptionField({}),
             PreviewField({
               // if the `generateUrl` function is configured
               hasGenerateFn: true,
               // field paths to match the target field for data
-              titlePath: 'meta.title',
-              descriptionPath: 'meta.description',
+              titlePath: "meta.title",
+              descriptionPath: "meta.description",
             }),
           ],
         },
       ],
     },
     {
-      name: 'publishedAt',
-      type: 'date',
+      name: "publishedAt",
+      type: "date",
       admin: {
-        position: 'sidebar',
+        position: "sidebar",
       },
     },
-    slugField('title'),
+    slugField("title"),
   ],
   hooks: {
     afterChange: [revalidatePage],
@@ -116,7 +115,10 @@ export const Pages: CollectionConfig = {
   versions: {
     drafts: {
       autosave: {
-        interval: process.env.NODE_ENV === 'development' ? 1000 * 60 * 5 : 1000 * 60 * 0.5, // We set this interval for optimal live preview
+        interval:
+          process.env.NODE_ENV === "development"
+            ? 1000 * 60 * 5
+            : 1000 * 60 * 0.5, // We set this interval for optimal live preview
       },
     },
     maxPerDoc: 5,
