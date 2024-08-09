@@ -1,18 +1,18 @@
-import { Blocks } from '@/components/blocks'
-import { Hero } from '@/components/hero'
-import { createPage } from '@/lib/create-page'
+import { notFound } from "next/navigation"
+import config from "@payload-config"
+import { getPayloadHMR } from "@payloadcms/next/utilities"
 
-import config from '@payload-config'
-import { getPayloadHMR } from '@payloadcms/next/utilities'
-import { notFound } from 'next/navigation'
+import { createPage } from "@/lib/create-page"
+import { Blocks } from "@/components/blocks"
+import { Hero } from "@/components/hero"
 
-export const dynamic = 'force-static'
+export const dynamic = "force-static"
 
 const { Page } = createPage({
   loader: async ({ params: { slug } }) => {
     const payload = await getPayloadHMR({ config })
     const result = await payload.find({
-      collection: 'pages',
+      collection: "pages",
       limit: 1,
       depth: 5,
       where: {
@@ -39,19 +39,19 @@ const { Page } = createPage({
 })
 
 export async function generateStaticParams() {
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === "development") {
     return []
   }
   const payload = await getPayloadHMR({ config })
   const pages = await payload.find({
-    collection: 'pages',
+    collection: "pages",
     draft: false,
     limit: 1000,
   })
 
   return pages.docs
     ?.filter((doc) => {
-      return doc.slug !== 'home'
+      return doc.slug !== "home"
     })
     .map(({ slug }) => slug)
 }

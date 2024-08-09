@@ -1,11 +1,12 @@
-import { Paragraph } from '@/components/paragraph'
-import { titleVariants } from '@/components/title'
-import { Badge } from '@/components/ui/badge'
-import { prependServerUrl } from '@/lib/prepend-server-url'
-import { Media, Space } from '@/payload-types'
-import { Home, MapPin, Table } from 'lucide-react'
-import Image from 'next/image'
-import Link from 'next/link'
+import Image from "next/image"
+import Link from "next/link"
+import { Media, Space } from "@/payload-types"
+import { Home, MapPin, Table } from "lucide-react"
+
+import { prependServerUrl } from "@/lib/prepend-server-url"
+import { Badge } from "@/components/ui/badge"
+import { Paragraph } from "@/components/paragraph"
+import { titleVariants } from "@/components/title"
 
 type Props = {
   space: Space
@@ -14,10 +15,12 @@ export const SpaceCard: React.FC<Props> = ({ space }) => {
   return (
     <div className="group col-span-12 flex w-full flex-col gap-3 md:col-span-6 xl:col-span-4">
       <div className="relative aspect-[16/11] w-full overflow-hidden bg-accent rounded-lg">
-        {space.featureImage && (
+        {space.featureImages?.[0] && (
           <Image
-            src={prependServerUrl((space.featureImage as Media)?.url ?? '')}
-            alt={(space.featureImage as Media)?.alt ?? ''}
+            src={prependServerUrl(
+              (space.featureImages?.[0] as Media)?.url ?? ""
+            )}
+            alt={(space.featureImages?.[0] as Media)?.alt ?? ""}
             fill
             className="object-cover"
           />

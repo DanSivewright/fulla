@@ -31,8 +31,8 @@ const Root: React.FC<Props> = async ({}) => {
                 collection: "spaces",
                 depth: 1,
                 where: {
-                  public: {
-                    equals: true,
+                  _status: {
+                    equals: "published",
                   },
                 },
               })()}
