@@ -29,7 +29,7 @@ const Root: React.FC<Props> = async ({}) => {
           style={{
             pointerEvents: "none",
           }}
-          className="flex absolute h-fit w-full gap-2 max-w-screen-md text-center z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 items-center justify-center flex-col"
+          className="flex gutter absolute h-fit w-full gap-2 max-w-screen-lg text-center z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 items-center justify-center flex-col"
         >
           <Title
             style={{ margin: 0 }}
