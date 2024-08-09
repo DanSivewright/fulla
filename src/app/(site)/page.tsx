@@ -1,14 +1,22 @@
 import { Suspense } from "react"
-import { headers } from "next/headers"
 import { Space } from "@/payload-types"
 
-import { auth } from "@/lib/auth"
 import { getCollection } from "@/lib/get-collection"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Await } from "@/components/await"
+import { BackgroundGradientAnimation } from "@/components/background-gradient-animation"
 import { SpaceCard } from "@/components/cards/space-card"
 import Empty from "@/components/empty"
 import { Grid } from "@/components/grid"
-import { SiteHero } from "@/components/hero/site-hero"
+import { Paragraph } from "@/components/paragraph"
 import { Section } from "@/components/section"
 import { Title } from "@/components/title"
 
@@ -16,7 +24,59 @@ type Props = {}
 const Root: React.FC<Props> = async ({}) => {
   return (
     <>
-      <SiteHero />
+      <BackgroundGradientAnimation containerClassName="mt-[-3.7rem] h-[480px] w-screen">
+        <div
+          style={{
+            pointerEvents: "none",
+          }}
+          className="flex absolute h-fit w-full gap-2 max-w-screen-md text-center z-10 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 items-center justify-center flex-col"
+        >
+          <Title
+            style={{ margin: 0 }}
+            className="bg-clip-text text-transparent drop-shadow-2xl bg-gradient-to-b from-white/80 to-white/20 pointer-events-none select-none font-semibold text-pretty"
+          >
+            Find your next space now
+          </Title>
+          <Paragraph className="bg-clip-text text-transparent drop-shadow-2xl bg-gradient-to-b from-white/80 to-white/20 pointer-events-none select-none text-pretty">
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Neque,
+            sapiente amet.
+          </Paragraph>
+          <div
+            style={{
+              pointerEvents: "auto",
+            }}
+            className="w-full flex items-center mt-4"
+          >
+            <div className="flex items-center p-2 bg-white/40  backdrop-blur rounded-l-lg border-r border-white/35">
+              <Select>
+                <SelectTrigger
+                  defaultValue="All"
+                  variant="ghost"
+                  sizing="xl"
+                  className="gap-2 bg-transparent placeholder:text-white/70 focus-visible:ring-0 focus-visible:ring-offset-0 text-white/90"
+                >
+                  <SelectValue placeholder="Filters" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="All">All</SelectItem>
+                  <SelectItem value="nearMe">Near Me</SelectItem>
+                  <SelectItem value="private">Private</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex items-center grow p-2 bg-white/40 w-full  backdrop-blur rounded-r-lg">
+              <Input
+                className="placeholder:text-white/70 focus-visible:ring-0 focus-visible:ring-offset-0 text-white/90"
+                variant="ghost"
+                placeholder="Search your next space..."
+                sizing="xl"
+              />
+              <Button size="xl">Search</Button>
+            </div>
+          </div>
+        </div>
+      </BackgroundGradientAnimation>
+
       <div className="container relative z-0">
         <Title level={1} showAs={3}>
           Browse

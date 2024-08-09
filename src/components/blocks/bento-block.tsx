@@ -1,18 +1,19 @@
-'use client'
-import { Media, Page, Post, Space } from '@/payload-types'
-import { useRef } from 'react'
+"use client"
 
-import { motion } from 'framer-motion'
-import Image from 'next/image'
-import Link from 'next/link'
+import { useRef } from "react"
+import Image from "next/image"
+import Link from "next/link"
+import { Media, Page, Post, Space } from "@/payload-types"
+import { motion } from "framer-motion"
 
-import { titleVariants } from '@/components/title'
-import { cn } from '@/lib/utils'
-import { Badge } from '../ui/badge'
-import { prependServerUrl } from '@/lib/prepend-server-url'
-import { useMediaQuery } from '@/hooks/use-media-query'
+import { prependServerUrl } from "@/lib/prepend-server-url"
+import { cn } from "@/lib/utils"
+import { useMediaQuery } from "@/hooks/use-media-query"
+import { titleVariants } from "@/components/title"
 
-type Props = Extract<Page['layout'][0], { blockType: 'bento-block' }>
+import { Badge } from "../ui/badge"
+
+type Props = Extract<Page["layout"][0], { blockType: "bento-block" }>
 
 export const BentoBlock: React.FC<Props> = ({ items }) => {
   const firstImage = useRef<HTMLDivElement>(null) // Add type annotation for the ref
@@ -55,7 +56,7 @@ export const BentoBlock: React.FC<Props> = ({ items }) => {
     }
   }
 
-  const matches = useMediaQuery('(min-width: 1024px)')
+  const matches = useMediaQuery("(min-width: 1024px)")
   return (
     <>
       {!matches ? (
@@ -67,24 +68,26 @@ export const BentoBlock: React.FC<Props> = ({ items }) => {
             let desc
             let categories
 
-            if (blocks.relationTo === 'pages') {
+            if (blocks.relationTo === "pages") {
               const page = blocks.value as Page
               href = `/${page.slug}`
               src = (page?.meta?.image as Media)?.url
-              desc = page?.meta?.description?.replace(/\s/g, ' ')
-            } else if (blocks.relationTo === 'posts') {
+              desc = page?.meta?.description?.replace(/\s/g, " ")
+            } else if (blocks.relationTo === "posts") {
               const post = blocks.value as Post
               href = `/posts/${post.slug}`
               src = (post?.meta?.image as Media)?.url
-              desc = post?.meta?.description?.replace(/\s/g, ' ')
+              desc = post?.meta?.description?.replace(/\s/g, " ")
               categories =
-                post?.categories && Array.isArray(post?.categories) && post?.categories.length > 0
+                post?.categories &&
+                Array.isArray(post?.categories) &&
+                post?.categories.length > 0
                   ? post?.categories
                   : null
-            } else if (blocks.relationTo === 'spaces') {
+            } else if (blocks.relationTo === "spaces") {
               const space = blocks.value as Space
               href = `/spaces/${space.id}`
-              src = (space?.featureImage as Media)?.url
+              src = (space?.featureImages?.[0] as Media)?.url
               categories =
                 space?.categories &&
                 Array.isArray(space?.categories) &&
@@ -106,7 +109,7 @@ export const BentoBlock: React.FC<Props> = ({ items }) => {
                       <Image
                         className="object-cover brightness-75"
                         src={prependServerUrl(src)}
-                        alt={'image'}
+                        alt={"image"}
                         fill
                       />
                     )}
@@ -114,21 +117,30 @@ export const BentoBlock: React.FC<Props> = ({ items }) => {
                   <div className="absolute inset-0 z-10 flex h-full w-full flex-col justify-between p-3">
                     <div className="flex flex-col text-white gap-2">
                       <h2
-                        className={cn(titleVariants({ level: 5 }), 'line-clamp-1 text-white')}
+                        className={cn(
+                          titleVariants({ level: 5 }),
+                          "line-clamp-1 text-white"
+                        )}
                         style={{ margin: 0 }}
                       >
-                        {blocks.relationTo === 'pages' && (blocks.value as Page).title}
-                        {blocks.relationTo === 'posts' && (blocks.value as Post).title}
-                        {blocks.relationTo === 'spaces' && (blocks.value as Space).name}
+                        {blocks.relationTo === "pages" &&
+                          (blocks.value as Page).title}
+                        {blocks.relationTo === "posts" &&
+                          (blocks.value as Post).title}
+                        {blocks.relationTo === "spaces" &&
+                          (blocks.value as Space).name}
                       </h2>
-                      {desc && <p className="line-clamp-1 text-pretty">{desc}</p>}
+                      {desc && (
+                        <p className="line-clamp-1 text-pretty">{desc}</p>
+                      )}
                     </div>
                     <div className="flex gap-2 items-center flex-wrap">
                       {categories?.map((category, index) => {
-                        if (typeof category === 'object') {
+                        if (typeof category === "object") {
                           const { title: titleFromCategory } = category
 
-                          const categoryTitle = titleFromCategory || 'Untitled category'
+                          const categoryTitle =
+                            titleFromCategory || "Untitled category"
 
                           const isLast = index === categories.length - 1
 
@@ -152,7 +164,7 @@ export const BentoBlock: React.FC<Props> = ({ items }) => {
       ) : (
         <motion.div
           // @ts-ignore
-          className={cn('flex h-[45vw] w-full items-end gap-2')}
+          className={cn("flex h-[45vw] w-full items-end gap-2")}
           onMouseMove={(e) => {
             manageMouseMove(e)
           }}
@@ -164,24 +176,26 @@ export const BentoBlock: React.FC<Props> = ({ items }) => {
             let desc
             let categories
 
-            if (blocks.relationTo === 'pages') {
+            if (blocks.relationTo === "pages") {
               const page = blocks.value as Page
               href = `/${page.slug}`
               src = (page?.meta?.image as Media)?.url
-              desc = page?.meta?.description?.replace(/\s/g, ' ')
-            } else if (blocks.relationTo === 'posts') {
+              desc = page?.meta?.description?.replace(/\s/g, " ")
+            } else if (blocks.relationTo === "posts") {
               const post = blocks.value as Post
               href = `/posts/${post.slug}`
               src = (post?.meta?.image as Media)?.url
-              desc = post?.meta?.description?.replace(/\s/g, ' ')
+              desc = post?.meta?.description?.replace(/\s/g, " ")
               categories =
-                post?.categories && Array.isArray(post?.categories) && post?.categories.length > 0
+                post?.categories &&
+                Array.isArray(post?.categories) &&
+                post?.categories.length > 0
                   ? post?.categories
                   : null
-            } else if (blocks.relationTo === 'spaces') {
+            } else if (blocks.relationTo === "spaces") {
               const space = blocks.value as Space
               href = `/spaces/${space.id}`
-              src = (space?.featureImage as Media)?.url
+              src = (space?.featureImages?.[0] as Media)?.url
               categories =
                 space?.categories &&
                 Array.isArray(space?.categories) &&
@@ -195,9 +209,9 @@ export const BentoBlock: React.FC<Props> = ({ items }) => {
                 key={result.id}
                 // @ts-ignore
                 ref={index === 0 ? firstImage : secondImage}
-                className={cn('relative flex cursor-pointer', {
-                  'w-[66.66%]': index === 0,
-                  'w-[33.33%]': index === 1,
+                className={cn("relative flex cursor-pointer", {
+                  "w-[66.66%]": index === 0,
+                  "w-[33.33%]": index === 1,
                 })}
               >
                 <div className="w-full h-full flex-col justify-between">
@@ -206,7 +220,7 @@ export const BentoBlock: React.FC<Props> = ({ items }) => {
                       <Image
                         className="object-cover brightness-75"
                         src={prependServerUrl(src)}
-                        alt={'image'}
+                        alt={"image"}
                         fill
                       />
                     )}
@@ -214,21 +228,30 @@ export const BentoBlock: React.FC<Props> = ({ items }) => {
                   <div className="absolute inset-0 z-10 flex h-full w-full flex-col justify-between p-3">
                     <div className="flex flex-col text-white gap-2">
                       <h2
-                        className={cn(titleVariants({ level: 5 }), 'line-clamp-1 text-white')}
+                        className={cn(
+                          titleVariants({ level: 5 }),
+                          "line-clamp-1 text-white"
+                        )}
                         style={{ margin: 0 }}
                       >
-                        {blocks.relationTo === 'pages' && (blocks.value as Page).title}
-                        {blocks.relationTo === 'posts' && (blocks.value as Post).title}
-                        {blocks.relationTo === 'spaces' && (blocks.value as Space).name}
+                        {blocks.relationTo === "pages" &&
+                          (blocks.value as Page).title}
+                        {blocks.relationTo === "posts" &&
+                          (blocks.value as Post).title}
+                        {blocks.relationTo === "spaces" &&
+                          (blocks.value as Space).name}
                       </h2>
-                      {desc && <p className="line-clamp-1 text-pretty">{desc}</p>}
+                      {desc && (
+                        <p className="line-clamp-1 text-pretty">{desc}</p>
+                      )}
                     </div>
                     <div className="flex gap-2 items-center flex-wrap">
                       {categories?.map((category, index) => {
-                        if (typeof category === 'object') {
+                        if (typeof category === "object") {
                           const { title: titleFromCategory } = category
 
-                          const categoryTitle = titleFromCategory || 'Untitled category'
+                          const categoryTitle =
+                            titleFromCategory || "Untitled category"
 
                           const isLast = index === categories.length - 1
 
