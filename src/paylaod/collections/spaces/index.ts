@@ -212,6 +212,21 @@ export const Spaces: CollectionConfig = {
         position: "sidebar",
       },
     },
+    {
+      name: "featured",
+      label: "Featured",
+      type: "checkbox",
+      defaultValue: false,
+      access: {
+        read: ({ req: { user } }) => {
+          if (user?.role?.includes("admin")) return true
+          return false
+        },
+      },
+      admin: {
+        position: "sidebar",
+      },
+    },
   ],
   hooks: {
     afterChange: [revalidateSpaces],

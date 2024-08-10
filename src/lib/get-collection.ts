@@ -61,7 +61,11 @@ export function getCollection<T extends Collection>(
   })
   return unstable_cache(
     async () => fetchCollection(options),
-    [options.collection],
+    [
+      `collection_${options.collection}${
+        options.user ? `_${options.user?.id}` : ""
+      }${query ? `_${query}` : ""}`,
+    ],
     {
       ...(revalidate ? { revalidate } : {}),
       tags: [
@@ -84,7 +88,11 @@ export function getCollectionById<T extends Collection>(
   })
   return unstable_cache(
     async () => fetchCollectionById(options),
-    [options.collection, options.id],
+    [
+      `collection_${options.collection}_${options.id}${
+        options.user ? `_${options.user?.id}` : ""
+      }${query ? `_${query}` : ""}`,
+    ],
     {
       ...(revalidate ? { revalidate } : {}),
       tags: [

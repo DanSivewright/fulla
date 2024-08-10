@@ -10,8 +10,9 @@ export const populateCompany: CollectionBeforeChangeHook = async ({
     if (req.data?.company) return data
 
     if (req.user?.role?.includes("admin")) {
+      if (!req?.data?.property) return data
       const property = await req.payload.findByID({
-        id: req.data.property as string,
+        id: req?.data?.property as string,
         collection: "properties",
         depth: 0,
       })

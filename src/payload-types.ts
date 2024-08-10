@@ -97,6 +97,7 @@ export interface Company {
     };
     [k: string]: unknown;
   } | null;
+  logo?: (string | null) | Media;
   slug?: string | null;
   updatedAt: string;
   createdAt: string;
@@ -934,6 +935,7 @@ export interface Space {
   property: string | Property;
   manager?: (string | null) | User;
   company?: (string | null) | Company;
+  featured?: boolean | null;
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;

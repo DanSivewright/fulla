@@ -6,7 +6,7 @@ import { rounded } from "@/lib/constants"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex gap-2 shrink-0 items-center justify-center text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex gap-2 shrink-0 font-normal items-center justify-center text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       rounded,
