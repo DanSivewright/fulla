@@ -138,7 +138,7 @@ export const SiteHero: React.FC<Props> = ({}) => {
               </SelectContent>
             </Select>
           </div>
-          <div className="flex items-center grow p-2 bg-white/40 w-full  backdrop-blur rounded-lg lg:rounded-r-lg">
+          <div className="flex items-center grow p-2 bg-white/40 w-full  backdrop-blur rounded-lg lg:rounded-l-none lg:rounded-r-lg">
             <Input
               className="placeholder:text-white/70 focus-visible:ring-0 focus-visible:ring-offset-0 text-white/90"
               variant="ghost"
