@@ -22,6 +22,8 @@ export interface Config {
     spaces: Space;
     bookings: Booking;
     collections: Collection;
+    towns: Town;
+    spacesTypes: SpacesType;
     forms: Form;
     'form-submissions': FormSubmission;
     'payload-preferences': PayloadPreference;
@@ -613,6 +615,7 @@ export interface Form {
 export interface Space {
   id: string;
   name: string;
+  town?: (string | null) | Town;
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     richText?: {
@@ -664,58 +667,7 @@ export interface Space {
     [k: string]: unknown;
   } | null;
   featureImages?: (string | Media)[] | null;
-  type?:
-    | (
-        | 'office'
-        | 'desk'
-        | 'meetingRoom'
-        | 'conferenceRoom'
-        | 'sharedWorkspace'
-        | 'privateOffice'
-        | 'retailStore'
-        | 'warehouse'
-        | 'storageUnit'
-        | 'garage'
-        | 'loft'
-        | 'penthouse'
-        | 'duplex'
-        | 'studio'
-        | 'bungalow'
-        | 'cabin'
-        | 'cottage'
-        | 'chalet'
-        | 'villa'
-        | 'servicedApartment'
-        | 'hostelRoom'
-        | 'restaurantSpace'
-        | 'cafeSpace'
-        | 'barSpace'
-        | 'schoolClassroom'
-        | 'auditorium'
-        | 'lectureHall'
-        | 'boardroom'
-        | 'studyRoom'
-        | 'artStudio'
-        | 'musicRoom'
-        | 'theater'
-        | 'cinema'
-        | 'tennisCourt'
-        | 'squashCourt'
-        | 'basketballCourt'
-        | 'swimmingPool'
-        | 'playground'
-        | 'garden'
-        | 'terrace'
-        | 'balcony'
-        | 'patio'
-        | 'courtyard'
-        | 'roofDeck'
-        | 'basement'
-        | 'attic'
-        | 'utilityRoom'
-        | 'workshop'
-      )
-    | null;
+  type?: (string | null) | SpacesType;
   floor?: string | null;
   capacity?: string | null;
   layout: (
@@ -939,6 +891,48 @@ export interface Space {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "towns".
+ */
+export interface Town {
+  id: string;
+  name: string;
+  province?: string | null;
+  normalizedName?: string | null;
+  normalizedProvinceName?: string | null;
+  parent?: (string | null) | Town;
+  breadcrumbs?:
+    | {
+        doc?: (string | null) | Town;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "spacesTypes".
+ */
+export interface SpacesType {
+  id: string;
+  name: string;
+  slug?: string | null;
+  parent?: (string | null) | SpacesType;
+  breadcrumbs?:
+    | {
+        doc?: (string | null) | SpacesType;
+        url?: string | null;
+        label?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { Company, Media, Space } from "@/payload-types"
 
 import { cn } from "@/lib/utils"
@@ -20,7 +21,7 @@ import { Separator } from "./ui/separator"
 type Props = {
   spaces: Space[]
 }
-export const SpaceFilters: React.FC<Props> = ({ spaces }) => {
+const SpaceFilters: React.FC<Props> = ({ spaces }) => {
   const { ref: firstFilterRef, inView: firstFilterInView } = useInView({
     threshold: 0.9,
   })
@@ -67,7 +68,8 @@ export const SpaceFilters: React.FC<Props> = ({ spaces }) => {
           ></div>
           <div className="flex items-center gap-2 w-max ">
             {spaces?.map((space, i) => (
-              <div
+              <Link
+                href={`/search?company=${(space.company as Company).id}`}
                 ref={
                   i === 0
                     ? firstFilterRef
@@ -111,21 +113,7 @@ export const SpaceFilters: React.FC<Props> = ({ spaces }) => {
                     <SpaceCard space={space} />
                   </HoverCardContent>
                 </HoverCard>
-              </div>
-              //   <li
-              //     ref={
-              //       i === 0
-              //         ? firstFilterRef
-              //         : i === 99
-              //         ? lastFilterRef
-              //         : undefined
-              //     }
-              //     key={i + "_" + category}
-              //   >
-              //     <Button size="xs" rounded="full" variant="secondary">
-              //       {category}
-              //     </Button>
-              //   </li>
+              </Link>
             ))}
           </div>
           <ScrollBar orientation="horizontal" />
@@ -134,3 +122,5 @@ export const SpaceFilters: React.FC<Props> = ({ spaces }) => {
     </>
   )
 }
+
+export default SpaceFilters

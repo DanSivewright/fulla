@@ -52,23 +52,21 @@ const CollectionsPage: React.FC<Props> = async ({ searchParams }) => {
         }
       >
         <Await
-          promise={getCollection(
-            {
-              collection: "collections",
-              overrideAccess: false,
-              user: session.user,
-              ...(searchParams.q
-                ? {
-                    where: {
-                      name: {
-                        contains: searchParams.q,
-                      },
+          promise={getCollection({
+            collection: "collections",
+            overrideAccess: false,
+            user: session.user,
+            skipCache: true,
+            ...(searchParams.q
+              ? {
+                  where: {
+                    name: {
+                      contains: searchParams.q,
                     },
-                  }
-                : {}),
-            },
-            3600
-          )()}
+                  },
+                }
+              : {}),
+          })()}
           // promise={fetchCollection({
           //   collection: "collections",
           //   ...(searchParams.q

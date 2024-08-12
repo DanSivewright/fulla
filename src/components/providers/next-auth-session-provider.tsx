@@ -6,5 +6,13 @@ type Props = {
   children: React.ReactNode
 }
 export const NextAuthSessionProvider: React.FC<Props> = ({ children }) => {
-  return <SessionProvider>{children}</SessionProvider>
+  return (
+    <SessionProvider
+      //
+      baseUrl={process.env.NEXT_PUBLIC_SERVER_URL}
+      basePath="/auth"
+    >
+      {children}
+    </SessionProvider>
+  )
 }

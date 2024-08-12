@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useTransition } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { motion } from "framer-motion"
@@ -30,6 +30,7 @@ const nav = [
 ]
 
 export const Header: React.FC<Props> = ({}) => {
+  const [isPending, startTransition] = useTransition()
   const path = usePathname()
 
   const [activeTab, setActiveTab] = useState(path ?? nav[0].href)

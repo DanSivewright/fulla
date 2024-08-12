@@ -25,6 +25,8 @@ import { Posts } from "./paylaod/collections/posts"
 import { Properties } from "./paylaod/collections/properties"
 import { PropertiesTypes } from "./paylaod/collections/properties-types"
 import { Spaces } from "./paylaod/collections/spaces"
+import { SpacesTypes } from "./paylaod/collections/spaces-types"
+import { Towns } from "./paylaod/collections/towns"
 import { Users } from "./paylaod/collections/users"
 import { Footer } from "./paylaod/globals/footer/footer"
 import { Header } from "./paylaod/globals/header/header"
@@ -60,6 +62,8 @@ export default buildConfig({
     Spaces,
     Bookings,
     Collections,
+    Towns,
+    SpacesTypes,
   ],
   globals: [Header, Footer],
   editor: lexicalEditor(),
@@ -118,7 +122,7 @@ export default buildConfig({
       },
     }),
     nestedDocsPlugin({
-      collections: ["categories"],
+      collections: ["categories", "towns", "spacesTypes"],
     }),
     seoPlugin({
       generateTitle,

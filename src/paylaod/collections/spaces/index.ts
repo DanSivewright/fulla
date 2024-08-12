@@ -32,6 +32,16 @@ export const Spaces: CollectionConfig = {
       label: "Name",
       type: "text",
       required: true,
+      index: true,
+    },
+    {
+      name: "town",
+      label: "Town",
+      type: "relationship",
+      relationTo: "towns",
+      admin: {
+        position: "sidebar",
+      },
     },
     {
       type: "tabs",
@@ -52,69 +62,26 @@ export const Spaces: CollectionConfig = {
               hasMany: true,
             },
             {
+              index: true,
               name: "type",
-              label: "Type",
-              type: "select",
-              options: [
-                { label: "Office", value: "office" },
-                { label: "Desk", value: "desk" },
-                { label: "Meeting Room", value: "meetingRoom" },
-                { label: "Conference Room", value: "conferenceRoom" },
-                { label: "Shared Workspace", value: "sharedWorkspace" },
-                { label: "Private Office", value: "privateOffice" },
-                { label: "Retail Store", value: "retailStore" },
-                { label: "Warehouse", value: "warehouse" },
-                { label: "Storage Unit", value: "storageUnit" },
-                { label: "Garage", value: "garage" },
-                { label: "Loft", value: "loft" },
-                { label: "Penthouse", value: "penthouse" },
-                { label: "Duplex", value: "duplex" },
-                { label: "Studio", value: "studio" },
-                { label: "Bungalow", value: "bungalow" },
-                { label: "Cabin", value: "cabin" },
-                { label: "Cottage", value: "cottage" },
-                { label: "Chalet", value: "chalet" },
-                { label: "Villa", value: "villa" },
-                { label: "Serviced Apartment", value: "servicedApartment" },
-                { label: "Hostel Room", value: "hostelRoom" },
-                { label: "Restaurant Space", value: "restaurantSpace" },
-                { label: "Café Space", value: "cafeSpace" },
-                { label: "Bar Space", value: "barSpace" },
-                { label: "School Classroom", value: "schoolClassroom" },
-                { label: "Auditorium", value: "auditorium" },
-                { label: "Lecture Hall", value: "lectureHall" },
-                { label: "Boardroom", value: "boardroom" },
-                { label: "Study Room", value: "studyRoom" },
-                { label: "Art Studio", value: "artStudio" },
-                { label: "Music Room", value: "musicRoom" },
-                { label: "Theater", value: "theater" },
-                { label: "Cinema", value: "cinema" },
-                { label: "Tennis Court", value: "tennisCourt" },
-                { label: "Squash Court", value: "squashCourt" },
-                { label: "Basketball Court", value: "basketballCourt" },
-                { label: "Swimming Pool", value: "swimmingPool" },
-                { label: "Playground", value: "playground" },
-                { label: "Garden", value: "garden" },
-                { label: "Terrace", value: "terrace" },
-                { label: "Balcony", value: "balcony" },
-                { label: "Patio", value: "patio" },
-                { label: "Courtyard", value: "courtyard" },
-                { label: "Roof Deck", value: "roofDeck" },
-                { label: "Basement", value: "basement" },
-                { label: "Attic", value: "attic" },
-                { label: "Utility Room", value: "utilityRoom" },
-                { label: "Workshop", value: "workshop" },
-              ],
+              type: "relationship",
+              relationTo: "spacesTypes",
             },
             {
               name: "floor",
               label: "Floor",
+              admin: {
+                description:
+                  'The floor number of the space. Use "1" for ground floor.',
+              },
               type: "text",
+              index: true,
             },
             {
               name: "capacity",
               label: "Capacity",
               type: "text",
+              index: true,
             },
           ],
           label: "Display",
@@ -168,6 +135,7 @@ export const Spaces: CollectionConfig = {
     },
 
     {
+      index: true,
       name: "categories",
       type: "relationship",
       admin: {
@@ -176,9 +144,13 @@ export const Spaces: CollectionConfig = {
       hasMany: true,
       relationTo: "categories",
     },
-
-    slugField("name"),
+    slugField("name", {
+      admin: {
+        hidden: true,
+      },
+    }),
     {
+      index: true,
       name: "property",
       label: "Property",
       type: "relationship",
@@ -198,10 +170,12 @@ export const Spaces: CollectionConfig = {
       },
     },
     {
+      index: true,
       name: "company",
       label: "Company",
       type: "relationship",
       relationTo: "companies",
+
       access: {
         read: ({ req: { user } }) => {
           if (user?.role?.includes("admin")) return true
@@ -210,6 +184,7 @@ export const Spaces: CollectionConfig = {
       },
       admin: {
         position: "sidebar",
+        hidden: true,
       },
     },
     {

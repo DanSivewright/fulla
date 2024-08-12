@@ -127,7 +127,7 @@ export const SiteHero: React.FC<Props> = ({}) => {
                 defaultValue="All"
                 variant="ghost"
                 sizing="xl"
-                className="gap-2 bg-transparent placeholder:text-white/70 focus-visible:ring-0 focus-visible:ring-offset-0 text-white/90"
+                className="gap-2 bg-transparent placeholder:text-white/70 border-transparent focus:border-transparent focus:ring-0 text-white/90"
               >
                 <SelectValue placeholder="Filters" />
               </SelectTrigger>
@@ -140,7 +140,7 @@ export const SiteHero: React.FC<Props> = ({}) => {
           </div>
           <div className="flex items-center grow p-2 bg-white/40 w-full  backdrop-blur rounded-lg lg:rounded-l-none lg:rounded-r-lg">
             <Input
-              className="placeholder:text-white/70 focus-visible:ring-0 focus-visible:ring-offset-0 text-white/90"
+              className="placeholder:text-white/70 border-transparent focus:border-transparent focus:ring-0 text-white/90"
               variant="ghost"
               placeholder="Search your next space..."
               sizing="xl"

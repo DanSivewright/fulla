@@ -28,6 +28,7 @@ export type CollectionOptions = {
   sort?: string
   where?: Where
   user?: any
+  skipCache?: boolean
 }
 
 async function fetchCollectionById<T extends Collection>(
@@ -59,6 +60,7 @@ export function getCollection<T extends Collection>(
     ...(where ? { where } : {}),
     ...(sort ? { sort } : {}),
   })
+  if (options?.skipCache) return async () => fetchCollection(options)
   return unstable_cache(
     async () => fetchCollection(options),
     [
@@ -86,20 +88,48 @@ export function getCollectionById<T extends Collection>(
     ...(where ? { where } : {}),
     ...(sort ? { sort } : {}),
   })
+  if (options?.skipCache) return async () => fetchCollectionById(options)
   return unstable_cache(
     async () => fetchCollectionById(options),
     [
-      `collection_${options.collection}_${options.id}${
+      `collection_${options.collection}__${options.id}${
         options.user ? `_${options.user?.id}` : ""
       }${query ? `_${query}` : ""}`,
     ],
     {
       ...(revalidate ? { revalidate } : {}),
       tags: [
-        `collection_${options.collection}_${options.id}${
+        `collection_${options.collection}__${options.id}${
           options.user ? `_${options.user?.id}` : ""
         }${query ? `_${query}` : ""}`,
       ],
     }
   )
 }
+// export function getCollectionById<T extends Collection>(
+//   options: CollectionOptions & { collection: T; id: string },
+//   revalidate?: number
+// ) {
+//   const { where, sort } = options ?? {}
+//   const query = qs.stringify({
+//     ...(where ? { where } : {}),
+//     ...(sort ? { sort } : {}),
+//   })
+//   if (options?.skipCache) return async () => fetchCollection(options)
+//   return unstable_cache(
+//     async () => fetchCollectionById(options),
+//     [
+//       `collection_${options.collection}_${options.id}${
+//         options.user ? `_${options.user?.id}` : ""
+//       }${query ? `_${query}` : ""}`,
+//     ],
+//     {
+//       ...(revalidate ? { revalidate } : {}),
+//       tags: [
+//         `collection_${options.collection}_${options.id}${
+//           options.user ? `_${options.user?.id}` : ""
+//         }${query ? `_${query}` : ""}`,
+//       ],
+//     }
+//   )
+// }

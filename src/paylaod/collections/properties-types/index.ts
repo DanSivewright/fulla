@@ -1,28 +1,28 @@
-import { slugField } from '@/paylaod/fields/slug-field'
-import type { CollectionConfig } from 'payload'
+import { slugField } from "@/paylaod/fields/slug-field"
+import type { CollectionConfig } from "payload"
 
 export const PropertiesTypes: CollectionConfig = {
-  slug: 'propertiesTypes',
+  slug: "propertiesTypes",
   labels: {
-    singular: 'Property Type',
-    plural: 'Property Types',
+    singular: "Property Type",
+    plural: "Property Types",
   },
   admin: {
-    hidden: true,
-    useAsTitle: 'name',
+    // hidden: true,
+    useAsTitle: "name",
   },
   fields: [
     {
-      name: 'name',
-      label: 'Name',
-      type: 'text',
+      name: "name",
+      label: "Name",
+      type: "text",
       required: true,
     },
     {
-      name: 'description',
-      label: 'Description',
-      type: 'text',
+      name: "description",
+      label: "Description",
+      type: "text",
     },
-    slugField('name'),
+    slugField("name"),
   ],
 }
