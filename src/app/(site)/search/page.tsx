@@ -1,6 +1,13 @@
 import { Suspense } from "react"
 import Image from "next/image"
-import { HouseIcon, Loader2, MapIcon, MapPinIcon, PinIcon } from "lucide-react"
+import { Space } from "@/payload-types"
+import {
+  HouseIcon,
+  Loader2,
+  MapIcon,
+  MapPinIcon,
+  SearchIcon,
+} from "lucide-react"
 
 import { createPage } from "@/lib/create-page"
 import { getCollection } from "@/lib/get-collection"
@@ -8,15 +15,14 @@ import { getCollectionCount } from "@/lib/get-collection-count"
 import { searchPageParamsCache } from "@/lib/search-params"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable"
-import { Separator } from "@/components/ui/separator"
 import { Await } from "@/components/await"
-import { gridVariants } from "@/components/grid"
+import { SpaceCard } from "@/components/cards/space-card"
+import { Grid, gridVariants } from "@/components/grid"
 import { Paragraph } from "@/components/paragraph"
 import { Section } from "@/components/section"
 import { Title } from "@/components/title"
@@ -165,25 +171,25 @@ const { Page } = createPage({
                 </div>
               </div>
 
-              <div className="grow bg-red-200 pl-6 h-full flex items-center gap-4">
-                X
-              </div>
-              <div className="grow bg-green-200 pl-6 h-full flex items-center gap-4">
-                X
-              </div>
-              <Button className="h-full aspect-square rounded-full">x</Button>
+              <div className="grow pl-6 h-full flex items-center gap-4"></div>
+              <div className="grow pl-6 h-full flex items-center gap-4"></div>
+              <Button className="h-full aspect-square rounded-full">
+                <SearchIcon size={24} className="text-white" />
+              </Button>
             </div>
           </div>
         </Section>
 
         <ResizablePanelGroup
           direction="horizontal"
-          className="min-h-[calc(100vh-3.7rem)] h-[calc(100vh-3.7rem)] w-screen"
+          className="max-h-[calc(100vh-3.7rem)] top-[3.75rem] h-[calc(100vh-3.7rem)] w-screen"
         >
-          <ResizablePanel defaultSize={60}>Map Here</ResizablePanel>
+          <ResizablePanel defaultSize={60}>
+            <SearchMap />
+          </ResizablePanel>
           <ResizableHandle />
           <ResizablePanel defaultSize={40}>
-            <div className="w-full h-[calc(100vh-3.7rem)] overflow-y-scroll no-scrollbar">
+            <div className="w-full max-h-[calc(100vh-3.7rem)] overflow-y-scroll h-[calc(100vh-3.7rem)] px-4 pb-10">
               <Suspense
                 fallback="Loading spaces..."
                 key={JSON.stringify(parsedParams)}
@@ -191,7 +197,7 @@ const { Page } = createPage({
                 <Await
                   promise={getCollection({
                     collection: "spaces",
-                    depth: 0,
+                    depth: 1,
                     skipCache: true,
                     where: {
                       and: [
@@ -245,7 +251,23 @@ const { Page } = createPage({
                     },
                   })()}
                 >
-                  {(spaces) => <pre>{JSON.stringify(spaces, null, 2)}</pre>}
+                  {(spaces) => (
+                    <>
+                      {spaces.docs.length ? (
+                        <Grid gap={"xs"} className="w-full">
+                          {spaces?.docs?.map((space: Space) => (
+                            <SpaceCard
+                              className="col-span-12 md:col-span-12 lg:col-span-12 xl:col-span-12"
+                              key={space.id}
+                              space={space}
+                            />
+                          ))}
+                        </Grid>
+                      ) : (
+                        <p>No spaces</p>
+                      )}
+                    </>
+                  )}
                 </Await>
               </Suspense>
             </div>

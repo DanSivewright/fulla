@@ -4,16 +4,23 @@ import { Media, Space } from "@/payload-types"
 import { Home, MapPin, Table } from "lucide-react"
 
 import { prependServerUrl } from "@/lib/prepend-server-url"
+import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Paragraph } from "@/components/paragraph"
 import { titleVariants } from "@/components/title"
 
 type Props = {
   space: Space
+  className?: string
 }
-export const SpaceCard: React.FC<Props> = ({ space }) => {
+export const SpaceCard: React.FC<Props> = ({ space, className }) => {
   return (
-    <div className="group col-span-12 flex w-full flex-col gap-3 md:col-span-6 xl:col-span-4">
+    <div
+      className={cn(
+        "group col-span-12 flex w-full flex-col gap-3 md:col-span-6 xl:col-span-4",
+        className
+      )}
+    >
       <div className="relative aspect-[16/11] w-full overflow-hidden bg-accent rounded-lg">
         {space.featureImages?.[0] && (
           <Image
