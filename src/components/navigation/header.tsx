@@ -53,7 +53,12 @@ export const Header: React.FC<Props> = ({}) => {
 
   useEffect(() => {
     if (path.includes("login")) setHidden(true)
-    else setHidden(false)
+
+    if (path.includes("search")) {
+      setBackground(true)
+      setBlur(false)
+      setHidden(false)
+    }
   }, [path])
 
   return (

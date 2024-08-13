@@ -20,6 +20,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable"
+import { Skeleton } from "@/components/ui/skeleton"
 import { Await } from "@/components/await"
 import { SpaceCard } from "@/components/cards/space-card"
 import { Grid, gridVariants } from "@/components/grid"
@@ -179,8 +180,134 @@ const { Page } = createPage({
             </div>
           </div>
         </Section>
+        <Section className="container relative flex min-h-screen pb-24 lg:pb-28 2xl:pl-10 xl:pr-0 xl:max-w-none">
+          <div className="min-h-screen w-full max-w-[1184px] flex-shrink-0 xl:w-[60%] xl:px-8 2xl:w-[60%]">
+            <Title style={{ margin: 0 }} level={2}>
+              Properties
+            </Title>
+            <Paragraph className="mt-4 text-muted-foreground/60">
+              233 Spaces • Rest of filters here
+            </Paragraph>
+            <div className="flex mt-6 items-center gap-4">
+              <Button size="lg" rounded="full" variant="outline">
+                Type
+              </Button>
+              <Button size="lg" rounded="full" variant="outline">
+                Rooms of Beds
+              </Button>
+              <Button size="lg" rounded="full" variant="outline">
+                $0 - $1000
+              </Button>
+              <Button size="lg" rounded="full" variant="outline">
+                On Special
+              </Button>
+            </div>
+            <Suspense
+              fallback={
+                <Grid gap="xs" className="w-full mt-4">
+                  {[...Array(6)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="group col-span-12 flex w-full flex-col gap-3 md:col-span-6 xl:col-span-4"
+                    >
+                      <Skeleton className="aspect-[16/11] w-full rounded-lg" />
+                      <Skeleton className="h-4 w-5/6" />
+                      <Skeleton className="h-7 w-1/3" />
+                      <div className="flex items-center gap-4">
+                        <Skeleton className="h-3 w-1/6" />
+                        <Skeleton className="h-3 w-1/6" />
+                      </div>
+                    </div>
+                  ))}
+                </Grid>
+              }
+              key={JSON.stringify(parsedParams)}
+            >
+              <Await
+                promise={getCollection({
+                  collection: "spaces",
+                  depth: 1,
+                  skipCache: true,
+                  where: {
+                    and: [
+                      {
+                        _status: {
+                          equals: "published",
+                        },
+                      },
+                      ...(entries && entries?.length
+                        ? entries.map(([key, value]) => {
+                            if (key === "name") {
+                              return {
+                                [key]: {
+                                  like: value,
+                                },
+                              }
+                            }
+                            if (key === "floorG" || key === "capacityG") {
+                              return {
+                                [key.slice(0, -1)]: {
+                                  greater_than_equal: value,
+                                },
+                              }
+                            }
+                            if (key === "floorL" || key === "capacityL") {
+                              return {
+                                [key.slice(0, -1)]: {
+                                  less_than_equal: value,
+                                },
+                              }
+                            }
+                            if (
+                              key === "categories" ||
+                              key === "town" ||
+                              key === "type"
+                            ) {
+                              return {
+                                [key]: {
+                                  in: value,
+                                },
+                              }
+                            }
+                            return {
+                              [key]: {
+                                equals: value,
+                              },
+                            }
+                          })
+                        : []),
+                    ],
+                  },
+                })()}
+              >
+                {(spaces) => (
+                  <>
+                    {spaces.docs.length ? (
+                      <Grid gap={"xs"} className="w-full mt-4">
+                        {spaces?.docs?.map((space: Space) => (
+                          <SpaceCard
+                            className="col-span-6 md:col-span-6 lg:col-span-6 xl:col-span-6"
+                            key={space.id}
+                            space={space}
+                          />
+                        ))}
+                      </Grid>
+                    ) : (
+                      <p>No spaces</p>
+                    )}
+                  </>
+                )}
+              </Await>
+            </Suspense>
+          </div>
+          <div className="xl:static xl:block xl:flex-1 hidden">
+            <div className="fixed left-0 top-0 h-full w-full overflow-hidden rounded-md xl:sticky xl:top-[3.75rem] xl:h-[calc(100vh-3.75rem)]">
+              <SearchMap />
+            </div>
+          </div>
+        </Section>
 
-        <ResizablePanelGroup
+        {/* <ResizablePanelGroup
           direction="horizontal"
           className="max-h-[calc(100vh-3.7rem)] top-[3.75rem] h-[calc(100vh-3.7rem)] w-screen"
         >
@@ -271,11 +398,8 @@ const { Page } = createPage({
                 </Await>
               </Suspense>
             </div>
-            {/* <div className="flex h-full items-center justify-center p-6">
-              <span className="font-semibold">Content</span>
-            </div> */}
           </ResizablePanel>
-        </ResizablePanelGroup>
+        </ResizablePanelGroup> */}
       </>
     )
   },
