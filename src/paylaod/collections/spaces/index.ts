@@ -35,6 +35,12 @@ export const Spaces: CollectionConfig = {
       index: true,
     },
     {
+      name: "price",
+      label: "Price",
+      type: "number",
+      index: true,
+    },
+    {
       name: "town",
       label: "Town",
       type: "relationship",

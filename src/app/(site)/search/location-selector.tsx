@@ -1,10 +1,11 @@
 "use client"
 
-import * as React from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { Town } from "@/payload-types"
-import { Command as CommandPrimitive } from "cmdk"
+import { CommandList, Command as CommandPrimitive } from "cmdk"
 import { MapIcon, X } from "lucide-react"
 import { useQueryStates } from "nuqs"
+import { set } from "zod"
 
 import { searchPageParamsParsers } from "@/lib/search-params"
 import { cn } from "@/lib/utils"
@@ -12,9 +13,10 @@ import { useElementSize } from "@/hooks/use-element-size"
 import { Badge } from "@/components/ui/badge"
 import {
   Command,
+  CommandEmpty,
   CommandGroup,
+  CommandInput,
   CommandItem,
-  CommandList,
 } from "@/components/ui/command"
 import {
   HoverCard,
@@ -22,31 +24,25 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
 
-type Options = Town
-
-export function MultiSelect({
-  options,
-  className,
-  placeholder = "Select options...",
-}: {
-  options: Options[]
-  className?: string
-  placeholder?: string
-}) {
+type Props = {
+  towns: Town[]
+}
+export const LocationSelector: React.FC<Props> = ({ towns }) => {
+  const [open, setOpen] = useState(false)
+  const [hasChanged, setHasChanged] = useState(false)
+  const [inputValue, setInputValue] = useState("")
   const [params, setParams] = useQueryStates(searchPageParamsParsers, {
     throttleMs: 1000,
     shallow: false,
   })
-  const inputRef = React.useRef<HTMLInputElement>(null)
-  const [open, setOpen] = React.useState(false)
-  const [selected, setSelected] = React.useState<Options[]>(
-    options.filter((option) => params?.town?.includes(option.id)) ?? []
+  const [selected, setSelected] = useState<Town[]>(
+    towns.filter((option) => params?.town?.includes(option.id)) ?? []
   )
-  const [inputValue, setInputValue] = React.useState("")
-  const [hasChanged, setHasChanged] = React.useState(false)
-  const { ref, width } = useElementSize()
 
-  const truthyParams = React.useMemo(() => {
+  const { ref, width } = useElementSize()
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const truthyParams = useMemo(() => {
     return Object.entries(params)
       .filter(([_, value]) => value)
       ?.map(([key, value]) => ({
@@ -54,17 +50,34 @@ export function MultiSelect({
       }))
   }, [params])
 
-  const handleUnselect = React.useCallback((framework: Options) => {
-    const filtered = selected.filter((s) => s.id !== framework.id)
-    setSelected(filtered)
-    const mapFilteredWithIdsOnly = filtered.map((s) => s.id)
-    setParams({
-      ...truthyParams,
-      town: mapFilteredWithIdsOnly?.length ? mapFilteredWithIdsOnly : null,
+  const selectables: Town[] = towns.filter(
+    (town) => !selected.some((s) => s.id === town.id)
+  )
+
+  useEffect(() => {
+    if (!open && hasChanged) {
+      if (selected.length) {
+        setParams({ ...truthyParams, town: selected.map((s) => s.id) })
+      } else {
+        setParams({ ...truthyParams, town: null })
+      }
+    }
+  }, [open])
+
+  const handleUnselect = useCallback((t: Town) => {
+    setSelected((prevSelected) => {
+      const filteredTowns = prevSelected.filter((s) => s.id !== t.id)
+
+      setParams(() => ({
+        ...truthyParams,
+        town: filteredTowns.length ? filteredTowns.map((x) => x.id) : null,
+      }))
+
+      return filteredTowns
     })
   }, [])
 
-  const handleKeyDown = React.useCallback(
+  const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
       const input = inputRef.current
       if (input) {
@@ -85,20 +98,6 @@ export function MultiSelect({
     },
     []
   )
-
-  const selectables = options.filter(
-    (framework) => !selected.includes(framework)
-  )
-
-  React.useEffect(() => {
-    if (!open && hasChanged) {
-      if (selected.length) {
-        setParams({ ...truthyParams, town: selected.map((s) => s.id) })
-      } else {
-        setParams({ ...truthyParams, town: null })
-      }
-    }
-  }, [open])
 
   return (
     <Command
@@ -159,7 +158,10 @@ export function MultiSelect({
                         e.preventDefault()
                         e.stopPropagation()
                       }}
-                      onClick={() => setSelected([])}
+                      onClick={() => {
+                        setSelected([])
+                        setParams({ ...truthyParams, town: null })
+                      }}
                     >
                       <X className="h-3 w-3 text-muted-foreground hover:text-foreground" />
                     </button>
@@ -221,24 +223,24 @@ export function MultiSelect({
       >
         <CommandList>
           {open && selectables.length > 0 ? (
-            <div className="absolute top-0 z-10 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
-              <CommandGroup className="h-full max-h-[40vh] overflow-auto">
-                {selectables.map((framework) => {
+            <div className="absolute overflow-auto top-3 z-10 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
+              <CommandGroup className="max-h-[30vh] overflow-auto">
+                {selectables.map((town) => {
                   return (
                     <CommandItem
-                      key={framework.id}
+                      key={town.id}
                       onMouseDown={(e) => {
                         e.preventDefault()
                         e.stopPropagation()
                       }}
                       onSelect={(value) => {
                         setInputValue("")
-                        setSelected((prev) => [...prev, framework])
+                        setSelected((prev) => [...prev, town])
                         setHasChanged(true)
                       }}
                       className={"cursor-pointer"}
                     >
-                      {framework.name}
+                      {town.name}
                     </CommandItem>
                   )
                 })}
@@ -247,35 +249,59 @@ export function MultiSelect({
           ) : null}
         </CommandList>
       </div>
-      {/* <div className="relative mt-2">
-        <CommandList>
-          {open && selectables.length > 0 ? (
-            <div className="absolute top-0 z-10 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
-              <CommandGroup className="h-full max-h-[40vh] overflow-auto">
-                {selectables.map((framework) => {
-                  return (
-                    <CommandItem
-                      key={framework.value}
-                      onMouseDown={(e) => {
-                        e.preventDefault()
-                        e.stopPropagation()
-                      }}
-                      onSelect={(value) => {
-                        setInputValue("")
-                        setSelected((prev) => [...prev, framework])
-                        setHasChanged(true)
-                      }}
-                      className={"cursor-pointer"}
-                    >
-                      {framework.label}
-                    </CommandItem>
-                  )
-                })}
-              </CommandGroup>
-            </div>
-          ) : null}
-        </CommandList>
-      </div> */}
     </Command>
+    // <Command
+    //   onKeyDown={handleKeyDown}
+    //   className="w-1/3 bg-transparent rounded-full"
+    // >
+    //   <Popover open={open} onOpenChange={setOpen}>
+    //     <PopoverTrigger asChild>
+    //       <button
+    //         ref={ref}
+    //         //   onClick={() => setOpen(true)}
+    //         className={cn(
+    //           "w-full rounded-full pl-6 h-full flex items-center gap-4",
+    //           {
+    //             "border border-input/30 bg-accent/50": open,
+    //           }
+    //         )}
+    //       >
+    //         <MapIcon size={24} className="text-muted-foreground/60" />
+    //         <div className="text-left flex w-full flex-col">
+    //           <CommandPrimitive.Input
+    //             ref={inputRef}
+    //             value={inputValue}
+    //             onValueChange={setInputValue}
+    //             onBlur={() => setOpen(false)}
+    //             onFocus={() => setOpen(true)}
+    //             placeholder="Search framework..."
+    //           />
+    //           <span className="text-muted-foreground/70 text-sm">
+    //             Where are you going?
+    //           </span>
+    //         </div>
+    //       </button>
+    //     </PopoverTrigger>
+
+    //     <div
+    //       style={{
+    //         width: width + "px",
+    //       }}
+    //       className="mt-3 p-0 max-h-[30vh] overflow-auto"
+    //     >
+    //       <CommandList>
+    //         <CommandGroup>
+    //           {towns.map((town) => {
+    //             return (
+    //               <CommandItem key={town.id} value={town.id}>
+    //                 <span>{town.name}</span>
+    //               </CommandItem>
+    //             )
+    //           })}
+    //         </CommandGroup>
+    //       </CommandList>
+    //     </div>
+    //   </Popover>
+    // </Command>
   )
 }

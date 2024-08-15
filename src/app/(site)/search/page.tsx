@@ -2,6 +2,7 @@ import { Suspense } from "react"
 import Image from "next/image"
 import { Space } from "@/payload-types"
 import {
+  CurrencyIcon,
   HouseIcon,
   Loader2,
   MapIcon,
@@ -28,7 +29,9 @@ import { Paragraph } from "@/components/paragraph"
 import { Section } from "@/components/section"
 import { Title } from "@/components/title"
 
+import { LocationSelector } from "./location-selector"
 import { MultiSelect } from "./multi-select"
+import { PriceSelector } from "./price-selector"
 import SearchMap from "./search-map"
 import { TypeFilters } from "./type-filters"
 
@@ -155,28 +158,13 @@ const { Page } = createPage({
           <div className="col-span-12 z-10 flex flex-col gap-10 mt-12 lg:-mt-56">
             <TypeFilters spacesTypes={spacesTypes.docs ?? []} />
             <div className="w-full flex items-center p-2 h-24 bg-background rounded-full shadow z-10">
-              <div className="w-1/3 pl-6 h-full flex items-center gap-4">
-                <MapPinIcon size={24} className="text-muted-foreground/60" />
-                <div className="flex w-full flex-col">
-                  <MultiSelect
-                    placeholder="Location"
-                    className="block w-full bg-transparent border-none focus:ring-0 p-0 focus:outline-none focus:placeholder-neutral-300 xl:text-lg font-semibold placeholder-neutral-800 dark:placeholder-neutral-200 truncate"
-                    options={towns.docs.map((town) => ({
-                      label: town.name,
-                      value: town.id,
-                    }))}
-                  />
-                  <span className="text-muted-foreground/70 text-sm">
-                    Where are you going?
-                  </span>
-                </div>
-              </div>
+              <LocationSelector towns={towns.docs ?? []} />
 
+              <PriceSelector />
               <div className="grow pl-6 h-full flex items-center gap-4"></div>
-              <div className="grow pl-6 h-full flex items-center gap-4"></div>
-              <Button className="h-full aspect-square rounded-full">
-                <SearchIcon size={24} className="text-white" />
-              </Button>
+              {/* <Button className="h-full aspect-square rounded-full">
+                <SearchIcon size={24} className="text-background" />
+              </Button> */}
             </div>
           </div>
         </Section>
@@ -251,6 +239,21 @@ const { Page } = createPage({
                                 },
                               }
                             }
+                            if (key === "price") {
+                              return {
+                                [key]: {
+                                  greater_than_equal: value?.[0],
+                                },
+                                or: [
+                                  {
+                                    [key]: {
+                                      less_than_equal: value?.[1],
+                                    },
+                                  },
+                                ],
+                              }
+                            }
+
                             if (key === "floorL" || key === "capacityL") {
                               return {
                                 [key.slice(0, -1)]: {

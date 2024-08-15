@@ -4,7 +4,7 @@ import { CollectionConfig } from "payload"
 export const Towns: CollectionConfig = {
   slug: "towns",
   admin: {
-    hidden: true,
+    // hidden: true,
     useAsTitle: "name",
   },
   fields: [

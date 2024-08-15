@@ -15,6 +15,7 @@ export const searchPageParamsParsers = {
   capacityL: parseAsInteger.withDefault(0),
   type: parseAsArrayOf(parseAsString).withDefault(null),
   categories: parseAsArrayOf(parseAsString),
+  price: parseAsArrayOf(parseAsInteger),
   town: parseAsArrayOf(parseAsString),
 }
 export const searchPageParamsCache = createSearchParamsCache(

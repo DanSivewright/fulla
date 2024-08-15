@@ -615,6 +615,7 @@ export interface Form {
 export interface Space {
   id: string;
   name: string;
+  price?: number | null;
   town?: (string | null) | Town;
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
