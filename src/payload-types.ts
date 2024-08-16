@@ -617,6 +617,11 @@ export interface Space {
   name: string;
   price?: number | null;
   town?: (string | null) | Town;
+  /**
+   * @minItems 2
+   * @maxItems 2
+   */
+  location?: [number, number] | null;
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     richText?: {

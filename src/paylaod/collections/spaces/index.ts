@@ -50,6 +50,11 @@ export const Spaces: CollectionConfig = {
       },
     },
     {
+      name: "location",
+      type: "point",
+      label: "Location",
+    },
+    {
       type: "tabs",
       tabs: [
         {

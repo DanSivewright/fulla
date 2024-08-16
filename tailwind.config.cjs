@@ -121,6 +121,7 @@ module.exports = {
     // addVariablesForColors,
     require("tailwindcss-animate"),
     require("@tailwindcss/typography"),
+    "prettier-plugin-tailwindcss",
     ({ addComponents, theme }) => {
       const lg = theme("screens.lg", {})
       const xl = theme("screens.xl", {})

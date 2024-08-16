@@ -168,30 +168,19 @@ const { Page } = createPage({
             </div>
           </div>
         </Section>
-        <Section className="container relative flex min-h-screen pb-24 lg:pb-28 2xl:pl-10 xl:pr-0 xl:max-w-none">
-          <div className="min-h-screen w-full max-w-[1184px] flex-shrink-0 xl:w-[60%] xl:px-8 2xl:w-[60%]">
-            <Title style={{ margin: 0 }} level={2}>
-              Properties
-            </Title>
-            <Paragraph className="mt-4 text-muted-foreground/60">
-              233 Spaces • Rest of filters here
-            </Paragraph>
-            <div className="flex mt-6 items-center gap-4">
-              <Button size="lg" rounded="full" variant="outline">
-                Type
-              </Button>
-              <Button size="lg" rounded="full" variant="outline">
-                Rooms of Beds
-              </Button>
-              <Button size="lg" rounded="full" variant="outline">
-                $0 - $1000
-              </Button>
-              <Button size="lg" rounded="full" variant="outline">
-                On Special
-              </Button>
-            </div>
-            <Suspense
-              fallback={
+
+        <Suspense
+          fallback={
+            <Section className="container relative flex min-h-screen pb-24 lg:pb-28 2xl:pl-10 xl:pr-0 xl:max-w-none">
+              <div className="min-h-screen w-full max-w-[1184px] flex-shrink-0 xl:w-[60%] xl:px-8 2xl:w-[60%]">
+                <Title style={{ margin: 0 }} level={2}>
+                  Properties
+                </Title>
+                <div className="mt-4 flex flex-col gap-2">
+                  <Skeleton className="w-1/2 nt-4 h-7 rounded-md" />
+                  <Skeleton className="w-full h-11 rounded-md" />
+                </div>
+                {/* <Skeleton className="w-full h-12 rounded-md" /> */}
                 <Grid gap="xs" className="w-full mt-4">
                   {[...Array(6)].map((_, i) => (
                     <div
@@ -208,83 +197,111 @@ const { Page } = createPage({
                     </div>
                   ))}
                 </Grid>
-              }
-              key={JSON.stringify(parsedParams)}
-            >
-              <Await
-                promise={getCollection({
-                  collection: "spaces",
-                  depth: 1,
-                  skipCache: true,
-                  where: {
-                    and: [
-                      {
-                        _status: {
-                          equals: "published",
-                        },
-                      },
-                      ...(entries && entries?.length
-                        ? entries.map(([key, value]) => {
-                            if (key === "name") {
-                              return {
-                                [key]: {
-                                  like: value,
-                                },
-                              }
-                            }
-                            if (key === "floorG" || key === "capacityG") {
-                              return {
-                                [key.slice(0, -1)]: {
-                                  greater_than_equal: value,
-                                },
-                              }
-                            }
-                            if (key === "price") {
-                              return {
-                                [key]: {
-                                  greater_than_equal: value?.[0],
-                                },
-                                or: [
-                                  {
-                                    [key]: {
-                                      less_than_equal: value?.[1],
-                                    },
-                                  },
-                                ],
-                              }
-                            }
-
-                            if (key === "floorL" || key === "capacityL") {
-                              return {
-                                [key.slice(0, -1)]: {
-                                  less_than_equal: value,
-                                },
-                              }
-                            }
-                            if (
-                              key === "categories" ||
-                              key === "town" ||
-                              key === "type"
-                            ) {
-                              return {
-                                [key]: {
-                                  in: value,
-                                },
-                              }
-                            }
-                            return {
-                              [key]: {
-                                equals: value,
-                              },
-                            }
-                          })
-                        : []),
-                    ],
+              </div>
+              <div className="xl:static xl:block xl:flex-1 hidden">
+                <Skeleton className="fixed left-0 top-0 w-full overflow-hidden rounded-md xl:sticky xl:top-[3.75rem] xl:h-[calc(100vh-3.75rem)] h-full" />
+              </div>
+            </Section>
+          }
+          key={JSON.stringify(parsedParams)}
+        >
+          <Await
+            promise={getCollection({
+              collection: "spaces",
+              depth: 1,
+              skipCache: true,
+              where: {
+                and: [
+                  {
+                    _status: {
+                      equals: "published",
+                    },
                   },
-                })()}
-              >
-                {(spaces) => (
-                  <>
+                  ...(entries && entries?.length
+                    ? entries.map(([key, value]) => {
+                        if (key === "name") {
+                          return {
+                            [key]: {
+                              like: value,
+                            },
+                          }
+                        }
+                        if (key === "floorG" || key === "capacityG") {
+                          return {
+                            [key.slice(0, -1)]: {
+                              greater_than_equal: value,
+                            },
+                          }
+                        }
+                        if (key === "price") {
+                          return {
+                            [key]: {
+                              greater_than_equal: value?.[0],
+                            },
+                            or: [
+                              {
+                                [key]: {
+                                  less_than_equal: value?.[1],
+                                },
+                              },
+                            ],
+                          }
+                        }
+
+                        if (key === "floorL" || key === "capacityL") {
+                          return {
+                            [key.slice(0, -1)]: {
+                              less_than_equal: value,
+                            },
+                          }
+                        }
+                        if (
+                          key === "categories" ||
+                          key === "town" ||
+                          key === "type"
+                        ) {
+                          return {
+                            [key]: {
+                              in: value,
+                            },
+                          }
+                        }
+                        return {
+                          [key]: {
+                            equals: value,
+                          },
+                        }
+                      })
+                    : []),
+                ],
+              },
+            })()}
+          >
+            {(spaces) => (
+              <>
+                <Section className="container relative flex min-h-screen pb-24 lg:pb-28 2xl:pl-10 xl:pr-0 xl:max-w-none">
+                  <div className="min-h-screen w-full max-w-[1184px] flex-shrink-0 xl:w-[60%] xl:px-8 2xl:w-[60%]">
+                    <Title style={{ margin: 0 }} level={2}>
+                      Properties
+                    </Title>
+                    <Paragraph className="mt-4 text-muted-foreground/60">
+                      233 Spaces • Rest of filters here
+                    </Paragraph>
+                    <div className="flex mt-6 items-center gap-4">
+                      <Button size="lg" rounded="full" variant="outline">
+                        Type
+                      </Button>
+                      <Button size="lg" rounded="full" variant="outline">
+                        Rooms of Beds
+                      </Button>
+                      <Button size="lg" rounded="full" variant="outline">
+                        $0 - $1000
+                      </Button>
+                      <Button size="lg" rounded="full" variant="outline">
+                        On Special
+                      </Button>
+                    </div>
+
                     {spaces.docs.length ? (
                       <Grid gap={"xs"} className="w-full mt-4">
                         {spaces?.docs?.map((space: Space) => (
@@ -298,111 +315,17 @@ const { Page } = createPage({
                     ) : (
                       <p>No spaces</p>
                     )}
-                  </>
-                )}
-              </Await>
-            </Suspense>
-          </div>
-          <div className="xl:static xl:block xl:flex-1 hidden">
-            <div className="fixed left-0 top-0 h-full w-full overflow-hidden rounded-md xl:sticky xl:top-[3.75rem] xl:h-[calc(100vh-3.75rem)]">
-              <SearchMap />
-            </div>
-          </div>
-        </Section>
-
-        {/* <ResizablePanelGroup
-          direction="horizontal"
-          className="max-h-[calc(100vh-3.7rem)] top-[3.75rem] h-[calc(100vh-3.7rem)] w-screen"
-        >
-          <ResizablePanel defaultSize={60}>
-            <SearchMap />
-          </ResizablePanel>
-          <ResizableHandle />
-          <ResizablePanel defaultSize={40}>
-            <div className="w-full max-h-[calc(100vh-3.7rem)] overflow-y-scroll h-[calc(100vh-3.7rem)] px-4 pb-10">
-              <Suspense
-                fallback="Loading spaces..."
-                key={JSON.stringify(parsedParams)}
-              >
-                <Await
-                  promise={getCollection({
-                    collection: "spaces",
-                    depth: 1,
-                    skipCache: true,
-                    where: {
-                      and: [
-                        {
-                          _status: {
-                            equals: "published",
-                          },
-                        },
-                        ...(entries && entries?.length
-                          ? entries.map(([key, value]) => {
-                              if (key === "name") {
-                                return {
-                                  [key]: {
-                                    like: value,
-                                  },
-                                }
-                              }
-                              if (key === "floorG" || key === "capacityG") {
-                                return {
-                                  [key.slice(0, -1)]: {
-                                    greater_than_equal: value,
-                                  },
-                                }
-                              }
-                              if (key === "floorL" || key === "capacityL") {
-                                return {
-                                  [key.slice(0, -1)]: {
-                                    less_than_equal: value,
-                                  },
-                                }
-                              }
-                              if (
-                                key === "categories" ||
-                                key === "town" ||
-                                key === "type"
-                              ) {
-                                return {
-                                  [key]: {
-                                    in: value,
-                                  },
-                                }
-                              }
-                              return {
-                                [key]: {
-                                  equals: value,
-                                },
-                              }
-                            })
-                          : []),
-                      ],
-                    },
-                  })()}
-                >
-                  {(spaces) => (
-                    <>
-                      {spaces.docs.length ? (
-                        <Grid gap={"xs"} className="w-full">
-                          {spaces?.docs?.map((space: Space) => (
-                            <SpaceCard
-                              className="col-span-12 md:col-span-12 lg:col-span-12 xl:col-span-12"
-                              key={space.id}
-                              space={space}
-                            />
-                          ))}
-                        </Grid>
-                      ) : (
-                        <p>No spaces</p>
-                      )}
-                    </>
-                  )}
-                </Await>
-              </Suspense>
-            </div>
-          </ResizablePanel>
-        </ResizablePanelGroup> */}
+                  </div>
+                  <div className="xl:static xl:block xl:flex-1 hidden">
+                    <div className="fixed left-0 top-0 h-full w-full overflow-hidden rounded-md xl:sticky xl:top-[3.75rem] xl:h-[calc(100vh-3.75rem)]">
+                      <SearchMap spaces={spaces?.docs ?? []} />
+                    </div>
+                  </div>
+                </Section>
+              </>
+            )}
+          </Await>
+        </Suspense>
       </>
     )
   },
